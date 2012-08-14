@@ -1,0 +1,42 @@
+<html>
+<head>
+	<title>Calendar test</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="css/bootstrap-responsive.css">
+	<link rel="stylesheet" type="text/css" href="css/tadaaapickr.css">
+
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="js/tadaaapickr.js"></script>
+
+	<script type="text/javascript" src="js/CalendarTools.js"></script>
+	<script type="text/javascript" src="js/locales/dates.locales.fr.js"></script>
+
+	<script type="text/javascript">
+		$(function onload() {
+			$.fn.datepicker.Calendar.setDefaultLocale("fr");
+			$("input[type='date'], input.date").datepicker({dateFormat: "dd/mm/yyyy"});
+		});
+	</script>
+</head>
+<body>
+
+<article class="container span5">
+<h1>Tadaa Calendar Test</h1>
+
+<hr/>
+
+<form class="well">
+	<h2>Once upon a time</h2>
+	<label>Entrez une date ici : <input id="txtFromDate" type="text" class="date" size="10"/></label>
+
+	<h2>Long long ago..</h2>
+	<label>Et puis là : <input id="txtToDate" type="text" class="date" size="10" /></label>
+
+</form>
+
+</article>
+
+
+</body>
+</html>
