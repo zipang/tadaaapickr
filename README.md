@@ -33,14 +33,20 @@ Then add references to the stylesheet and javascript files in your page:
 Create one ore more text input to tie the plugin to:
 
     <input type="text" id="txtDate" />
+    <input type="text" class="date french" id="txtFrenchDate" />
 
 
-Finally bind the plugin to the input textbox and set any options you want:
+Finally bind the plugin to the input textbox like this:
 
-    $("#txtDate").datepicker({
-        startDate: new Date("September 5, 2011"),
-        endDate: new Date("October 26, 2011")
+    $("#txtDate").datepicker();
+
+Pass some options like this :
+
+    $("input.date.french").datepicker({
+        dateFormat: "dd/mm/yyyy",
+        language: "fr"
     });
+
 
 Acknowlegements
 ---------------
