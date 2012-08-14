@@ -62,10 +62,10 @@
 
 			// Add keyboard navigation support
 			this.$target.keydown($.proxy(this.keyHandler, this));
-/*
+
 			this.setStartDate(options.startDate);
 			this.setEndDate(options.endDate);
-*/
+
 			this.firstDayOfWeek = options.firstDayOfWeek;
 			this.locale = Calendar.getLocale(options.language);
 			this.defaultDate = (options.mandatory ? Calendar.now() : null);
@@ -167,7 +167,7 @@
 
 			this.refreshDays = noop; // @TODO : Find a better optimization
 		},
-/*
+
 		// Set a new start date
 		setStartDate : function (d) {
 			this.startDate = d;
@@ -177,7 +177,7 @@
 		setEndDate : function (d) {
 			this.endDate = d;
 		},
-*/
+
 		// Set a new selected date
 		setSelectedDate : function (d, update) {
 			var oldDate = this.selectedDate;
@@ -254,7 +254,6 @@
 				this.$target.trigger({type: "dateChange", date: this.selectedDate});
 			}
 
-			Calendar.hide();
 		}
 	};
 
@@ -303,7 +302,7 @@
 			// Update the $input control
 			cal.$target
 				.data("date", newDate)
-				.val(Date.format(newDate, cal.dateFormat, cal.settings.language))
+				.val(Date.format(newDate, cal.dateFormat, cal.settings.language)).select()
 				.trigger({type: "dateChange", date: newDate});
 
 			// Save selected
@@ -316,7 +315,7 @@
 		$cal.on("click", "th.month", function monthMove(e) {
 			e.stopPropagation();
 
-			var cal = $cal.data("calendar"), currentDate = cal.selectedDate;
+			var cal = $cal.data("calendar"), currentDate = cal.selectedDate || Calendar.now();
 			if (!cal) return;
 
 			var $btn = $(this), direction = $btn.hasClass("prev") ? -1 : ($btn.hasClass("next") ? +1 : 0);
@@ -324,7 +323,7 @@
 			if (direction) {
 				$("tbody td", $cal).removeClass("old new active"); // @TODO : Optimize
 				currentDate.setMonth(currentDate.getMonth() +  direction);
-				cal.setSelectedDate(currentDate);
+				cal.setSelectedDate(currentDate, true);
 				cal.refresh();
 			}
 		});
