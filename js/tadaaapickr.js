@@ -86,7 +86,6 @@
 
 			if ($cal.hasClass("active")) {
 				if ($cal.data("calendar") === this) {
-					console.log("allready active !");
 					return;
 				}
 				Calendar.hide($cal);
@@ -101,6 +100,15 @@
 			this.$cal.css({left: targetPos.left, top: targetPos.top + $target.outerHeight(false)})
 				.slideDown(200).addClass("active").data("calendar", this);
 			$target.select();
+
+			// actice key handler
+			this._keyHandler = this.activeKeyHandler;
+		},
+
+		hide: function() {
+			Calendar.hide(this.$cal);
+			this._keyHandler = this.inactiveKeyHandler;
+			return this;
 		},
 
 		// Refresh (update) the calendar display to reflect the current
@@ -183,11 +191,13 @@
 		// Set a new start date
 		setStartDate : function (d) {
 			this.startDate = d;
+			return this;
 		},
 
 		// Set a new end date
 		setEndDate : function (d) {
 			this.endDate = d;
+			return this;
 		},
 
 		// Set a new selected date
@@ -215,44 +225,65 @@
 					this.dirty = (oldDate != null);
 				}
 			}
-
+			return this;
 		},
 
 		// Set a new date format
 		setDateFormat: function(format) {
 			this.dateFormat = format;
 			this.authorizedChars = "0123456789" + (this.parsedFormat = Date.parseFormat(format)).separators.join("");
+			return this;
+		},
+
+		// ====== EVENT HANDLERS ====== //
+
+		// the only registred key handler (wrap the call to active or inactive key handler)
+		keyHandler: function(e) {
+			return this._keyHandler(e);
 		},
 
 		// Add keyboard navigation to the input element
-		keyHandler: function(e) {
+		activeKeyHandler: function(e) {
 
 			switch (e.keyCode) {
+
 				case 37: // LEFT
 					return (e.ctrlKey) ? this.navigate(-1, "months") : this.navigate(-1, "days");
 
 				case 38: // UP
-					return (e.ctrlKey) ? this.navigate(-1, "years") : this.navigate(-7, "days");
+					return (e.ctrlKey) ? this.navigate(-1, "years")  : this.navigate(-7, "days");
 
 				case 39: // RIGHT
 					return (e.ctrlKey) ? this.navigate(+1, "months") : this.navigate(+1, "days");
 
 				case 40: // DOWN
-					return (e.ctrlKey) ? this.navigate(+1, "years") : this.navigate(+7, "days");
+					return (e.ctrlKey) ? this.navigate(+1, "years")  : this.navigate(+7, "days");
 
 				case 9:  // TAB
 				case 13: // ENTER
 					// Send the 'Date change' event
 					this.$target.trigger({type: "dateChange", date: this.selectedDate});
-					return Calendar.hide();
+					return this.hide();
 			}
 
 			// Others keys are sign of a manual input
 			this.dirty = true;
 		},
 
-		// As manual input is also possible, check date validity on exit
-		checkManualInput: function() {
+		// When the calendar is not shown, show it first
+		inactiveKeyHandler: function(e) {
+
+			if (e.keyCode < 41 && e.keyCode > 36) {
+				this.show(e);
+				return (this._keyHandler = this.activeKeyHandler)(e);
+			}
+
+			// Others keys are sign of a manual input
+			this.dirty = true;
+		},
+
+		// As manual input is also possible, check date validity on blur (lost focus)
+		checkManualInput: function(e) {
 
 			if (!this.dirty) return;
 
@@ -268,7 +299,7 @@
 				this.$target.trigger({type: "dateChange", date: this.selectedDate});
 			}
 
-			Calendar.hide();
+			this.hide();
 		}
 	};
 
@@ -325,7 +356,7 @@
 			cal.setSelectedDate(newDate);
 
 			// Hide
-			Calendar.hide($cal);
+			cal.hide();
 		});
 
 		$cal.on("click", "th.month", function monthMove(e) {
@@ -382,6 +413,10 @@
 	/**
 	 * Hide any instance of any active calendar widget (they should be only one)
 	 * and clear the highlight class
+	 * Usage calls may be :
+	 * Calendar.hide() Hide every active calendar instance
+	 * Calendar.hide(evt) (as in document.click)
+	 * Calendar.hide($cal) Hide a specific calendar
 	 */
 	Calendar.hide = function($cal) {
 		var $target = ((!$cal || $cal.originalEvent) ? $(".datepicker.active") : $cal);
