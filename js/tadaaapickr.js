@@ -7,7 +7,7 @@
  - Styled with Bootstrap
 
  Complete project source available at:
- https://github.com/zipang/pwnedDatePicker/
+ https://github.com/zipang/tadaaapickr/
 
  Copyright (c) 2012 Christophe Desguez.  All rights reserved.
 
@@ -37,7 +37,7 @@
 		dateFormat  :"mm/dd/yyyy",
 		language    :"en",
 		firstDayOfWeek: 0, // the only choices are : 0 = Sunday, 1 = Monday,
-		mandatory: false
+		required: false
 	};
 
 	/**
@@ -68,11 +68,11 @@
 
 			this.firstDayOfWeek = options.firstDayOfWeek;
 			this.locale = Calendar.getLocale(options.language);
-			this.defaultDate = (options.mandatory ? Calendar.now() : null);
+			this.defaultDate = (options.defaultDate || Calendar.now()); // what to display on first appearance ?
 
 			// Bind click and focus event to show
 			var show = $.proxy(this.show, this);
-			this.$target.click(show).focus(show);
+			this.$target.click(stopPropagation).focus(show);
 
 			// Check manual input on blur
 			this.$target.blur($.proxy(this.checkManualInput, this));
@@ -82,31 +82,43 @@
 		show : function (e) {
 			e.stopPropagation();
 
-			Calendar.hide();
+			var $cal = this.$cal;
 
-			var $target = this.$target.select(), targetPos = $target.offset(),
+			if ($cal.hasClass("active")) {
+				if ($cal.data("calendar") === this) {
+					console.log("allready active !");
+					return;
+				}
+				Calendar.hide($cal);
+			}
+
+			var $target = this.$target, targetPos = $target.offset(),
 				inputDate = Date.parse($target.val(), this.parsedFormat);
 
-			this.setSelectedDate(inputDate || this.selectedDate || this.defaultDate, true);
+			this.setSelectedDate(inputDate, true);
 			this.refreshDays();
 			this.refresh();
 			this.$cal.css({left: targetPos.left, top: targetPos.top + $target.outerHeight(false)})
 				.slideDown(200).addClass("active").data("calendar", this);
-
+			$target.select();
 		},
 
 		// Refresh (update) the calendar display to reflect the current
 		// date selection and locales. If no selection, display the current month
 		refresh: function() {
 
-			var d = (this.selectedDate ? new Date(this.selectedDate.getTime()) : this.defaultDate || Calendar.now()),
-				dday = d.getDate(), mmonth = d.getMonth(),
+			var d = new Date(Date.UTC(this.year, this.month, 1)),
+				dday = -1, mmonth = -1,
 				$cal = this.$cal, $days = $cal.data("$days");
+
+			if (this.selectedDate) {
+				dday = this.selectedDate.getDate();
+				mmonth = this.selectedDate.getMonth();
+			}
 
 			$cal.data("$header").text(Date.format(d, "MMM yyyy", this.settings.language));
 
 			// find the first date to display
-			d.setDate(1);
 			while (d.getDay() != this.firstDayOfWeek) {
 				d = Date.add(d, -1, "days");
 			}
@@ -114,11 +126,11 @@
 			for (var i=0; i < 6*7; i++) {
 				var dayNumber = d.getDate(), month = d.getMonth();
 				$days[i].innerHTML = dayNumber;
-				if (month < mmonth) {
+				if (month < this.month) {
 					$($days[i]).addClass("old");
-				} else if (month > mmonth) {
+				} else if (month > this.month) {
 					$($days[i]).addClass("new");
-				} else if (dayNumber == dday) {
+				} else if ((dayNumber == dday) && (month == mmonth)) {
 					$cal.data("selected", i);
 					$($days[i]).addClass("active");
 				}
@@ -193,7 +205,9 @@
 					this.dirty = (!oldDate || (oldDate - d));
 				}
 			} else {
-				this.selectedDate = this.month = this.year = null;
+				this.selectedDate = null;
+				this.month = this.defaultDate.getMonth();
+				this.year = this.defaultDate.getFullYear();
 				if (update) {
 					this.$target.val("").select();
 					this.dirty = false;
@@ -247,13 +261,14 @@
 
 			if (!newDate) { // invalid or empty input
 				// restore the precedent value or erase the bad input
-				this.setSelectedDate(this.mandatory ? this.selectedDate || this.defaultDate : null, true);
+				this.setSelectedDate(this.required ? this.selectedDate || this.defaultDate : null, true);
 
 			} else if (newDate - this.selectedDate) {
 				this.setSelectedDate(newDate, true);
 				this.$target.trigger({type: "dateChange", date: this.selectedDate});
 			}
 
+			Calendar.hide();
 		}
 	};
 
@@ -296,8 +311,9 @@
 			var cal = $cal.data("calendar");
 			if (!cal) return;
 
-			var $day = $(this), day = +$day.text(), monthOffset = ($day.hasClass("old") ? -1 : ($day.hasClass("new") ? +1 : 0));
-			var newDate = new Date(Date.UTC(cal.year, cal.month + monthOffset, day));
+			var $day = $(this), day = +$day.text(),
+				monthOffset = ($day.hasClass("old") ? -1 : ($day.hasClass("new") ? +1 : 0)),
+				newDate = new Date(Date.UTC(cal.year, cal.month + monthOffset, day));
 
 			// Update the $input control
 			cal.$target
@@ -309,22 +325,23 @@
 			cal.setSelectedDate(newDate);
 
 			// Hide
-			Calendar.hide();
+			Calendar.hide($cal);
 		});
 
 		$cal.on("click", "th.month", function monthMove(e) {
 			e.stopPropagation();
+			e.preventDefault(); // IMPORTANT: prevent the input to loose focus!
 
-			var cal = $cal.data("calendar"), currentDate = cal.selectedDate || Calendar.now();
+			var cal = $cal.data("calendar");
 			if (!cal) return;
 
 			var $btn = $(this), direction = $btn.hasClass("prev") ? -1 : ($btn.hasClass("next") ? +1 : 0);
 
 			if (direction) {
 				$("tbody td", $cal).removeClass("old new active"); // @TODO : Optimize
-				currentDate.setMonth(currentDate.getMonth() +  direction);
-				cal.setSelectedDate(currentDate, true);
+				cal.month +=  direction;
 				cal.refresh();
+				cal.$target.select();
 			}
 		});
 
@@ -366,8 +383,9 @@
 	 * Hide any instance of any active calendar widget (they should be only one)
 	 * and clear the highlight class
 	 */
-	Calendar.hide = function() {
-		$(".datepicker")
+	Calendar.hide = function($cal) {
+		var $target = ((!$cal || $cal.originalEvent) ? $(".datepicker.active") : $cal);
+		$target
 			.removeClass("active").removeAttr("style")
 			.find("td").removeClass("active old new");
 	};
@@ -432,6 +450,7 @@
 		return (n == 0) ? "" : Array(n+1).join(str);
 	}
 	function noop() {}
+	function stopPropagation(e) {e.stopPropagation();}
 
 })(jQuery);
 
