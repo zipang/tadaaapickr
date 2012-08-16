@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Tadaaapickr : A jQuery DatePicker, styled with Bootstrap.. Tadaaa !!" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Tadaaapickr</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/zipang/tadaaapickr">View on GitHub</a>
+
+          <h1 id="project_title">Tadaaapickr</h1>
+          <h2 id="project_tagline">A jQuery DatePicker, styled with Bootstrap.. Tadaaa !!</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/zipang/tadaaapickr/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/zipang/tadaaapickr/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>tadaaapickr</h1>
+
+<p>A lightweight, accessible jQuery DatePicker, styled with Bootstrap.. Tadaaa !!</p>
+
+<p>Find the latest download, fully functional examples and instructions on how
+to use and configure this plugin at: <a href="http://github.com/zipang/tadaaapickr">http://github.com/zipang/tadaaapickr</a></p>
+
+<p>Test the project : <a href="http://zipang.github.com/tadaaapickr">http://zipang.github.com/tadaaapickr</a></p>
+
+<h3>Features</h3>
+
+<ul>
+<li>Full keyboard navigation
+
+<ul>
+<li>Arrows keys navigate inside the calendar space</li>
+<li>CTRL+arrows keys navigate in the months/years space</li>
+<li>ESC key restore the native input value</li>
+</ul>
+</li>
+<li>Full extensible internationalization support</li>
+<li>Lightweight markup. By default, only <em>one</em> calendar is used on a whole page even with different locales.</li>
+<li>Super fast and responsive, even under IE6/7</li>
+</ul><h2>Installation / Usage</h2>
+
+<h3>Basics</h3>
+
+<p>Extract the js and css folders from the archive.</p>
+
+<p>Then add references to the stylesheet and javascript files in your page:</p>
+
+<pre><code>&lt;link href="css/tadaaapickr.css" rel="stylesheet" type="text/css" /&gt;
+&lt;script type="text/javascript" src="js/tadaaapickr.js"&gt;&lt;/script&gt;
+</code></pre>
+
+<p>Create one ore more text input to tie the plugin to:</p>
+
+<pre><code>&lt;input type="text" id="txtDate" /&gt;
+&lt;input type="text" class="date french" id="txtFrenchDate" /&gt;
+</code></pre>
+
+<p>Finally bind the plugin to the input textbox like this:</p>
+
+<pre><code>$("#txtDate").datepicker();
+</code></pre>
+
+<p>Pass some options like this :</p>
+
+<pre><code>$("input.date.french").datepicker({
+    dateFormat: "dd/mm/yyyy",
+    language: "fr"
+});
+</code></pre>
+
+<h3>Internationalization</h3>
+
+<p>Several options are related to the internationalization of the dates, <code>language</code> being the main one because it defines the way months and days will be named.</p>
+
+<ul>
+<li>
+<code>language</code> (default: 'en')</li>
+<li>
+<code>dateFormat</code> (default: 'mm/dd/yyyy')</li>
+<li>
+<code>firstDayOfWeek</code> (default 0)</li>
+</ul><p>These options can be set individually, but as we know, they are usually related</p>
+
+<p>So, the internationalization files come with defaults settings for these 3 attributes.
+One way to set these setting is to use the <code>locale</code> option.</p>
+
+<p>So the following 2 calls are equivalents :</p>
+
+<pre><code>$("input.date.french").datepicker({
+    dateFormat: "dd/mm/yyyy",
+    firstDayOfWeek: 1,
+    language: "fr"
+});
+</code></pre>
+
+<p>or</p>
+
+<pre><code>$("input.date.french").datepicker({
+    locale: "fr"
+});
+</code></pre>
+
+<p>If all your date pickers have the same locale settings (there is a great chance for that in fact) then, you can set once and for all the default locale setting and forget it after.
+This gives us the third equivalent formulation of the 2 precedent examples :</p>
+
+<pre><code>$.fn.datepicker.Calendar.setDefaultLocale("fr");
+$("input.date.french").datepicker();
+$("#startDate").datepicker({startDate: '01/01/2000'}); // will also get the french locale
+</code></pre>
+
+<h2>Acknowlegements</h2>
+
+<p>This plugin would not have been made without the precedent awesome work of :</p>
+
+<ul>
+<li>
+<a href="http://www.eyecon.ro">Stefan Petre</a> and <a href="https://github.com/eternicode">Andrew Rowls</a> who started the first versions<a href="https://github.com/eternicode/bootstrap-datepicker">1</a> of a date picker styled with Bootstrap.</li>
+<li>
+<a href="https://github.com/glad">Gautam Lad</a> for the way its glDatePicker methods can be called via the same jQuery syntax.</li>
+<li>
+<a href="https://github.com/jeresig">John Resig</a> because he gave us jQuery, and we forgot about Prototype..</li>
+</ul><h2>License</h2>
+
+<p>Copyright (c) 2012 Christophe Desguez.  All rights reserved.</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Tadaaapickr maintained by <a href="https://github.com/zipang">zipang</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
