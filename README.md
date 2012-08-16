@@ -51,7 +51,7 @@ Pass some options like this :
 
 ### Internationalization
 
-Several options are related to the internationalization of the dates, language` being the main one because it defines the way months and days will be named.
+Several options are related to the internationalization of the dates, `language` being the main one because it defines the way months and days will be named.
 
 * `language` (default: 'en')
 * `dateFormat` (default: 'mm/dd/yyyy')
