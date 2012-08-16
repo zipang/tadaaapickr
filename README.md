@@ -4,7 +4,7 @@ tadaaapickr
 A lightweight, accessible jQuery DatePicker, styled with Bootstrap.. Tadaaa !!
 
 * View the project page : http://zipang.github.com/tadaaapickr
-* Try the demos : http://zipang.github.com/tadaaapickr/testPage.html
+* Try the demos : http://zipang.github.com/tadaaapickr/testpage.html
 * Fork it on github : http://github.com/zipang/tadaaapickr
 
 ### Features
