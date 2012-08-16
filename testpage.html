@@ -26,6 +26,10 @@
 				dateFormat: "yyyy-mm-dd",
 				firstDayOfWeek: 0
 			});
+
+			$("#cmdToday").click(function() {
+				$("input.date.today").datepicker("setDate", new Date());
+			});
 		});
 	</script>
 </head>
@@ -41,11 +45,11 @@
 
 	<form class="well">
 		<h2>Once upon a time</h2>
-		<label>When was the last time you heard about it ? <input type="text" class="date" size="10"/></label>
+		<label>When was the last time you heard about it ? <input type="text" class="date today" size="10"/></label>
 		<label>Tell us more about it : <input type="text"/></label>
 
 		<h2>Long long ago..</h2>
-		<label>Do you remember when ? <input type="text" class="date" size="10" /></label>
+		<label>Do you remember when ? <input type="text" class="date today" size="10" /></label>
 
 		<h2>In a faraway galaxy..</h2>
 		<label>That's when i was born : <input type="text" class="date" size="10" /></label>
@@ -58,12 +62,12 @@
 
 		<form class="well">
 			<h2>Il était une fois</h2>
-			<label>Entrez une date ici : <input id="txtFromDate" type="text" class="date" size="10"/></label>
-			<label>Dites nous en plus : <input id="txtComment" type="text"/></label>
+			<label>Entrez une date ici : <input type="text" class="date today" size="10"/></label>
+			<label>Dites nous en plus : <input type="text"/></label>
 
 
 			<h2>Il y a bien longtemps..</h2>
-			<label>Et puis quoi encore : <input id="txtToDate" type="text" class="date" size="10" /></label>
+			<label>Et puis quoi encore : <input type="text" class="date" size="10" /></label>
 
 			<h2>Dans une galaxie très lointaine..</h2>
 			<label>C'est à ce moment que je suis né : <input type="text" class="date" size="10" /></label>
@@ -77,7 +81,7 @@
 
 		<form class="well">
 			<h2>むかーし、昔</h2>
-			<label>Entrez une date ici : <input type="text" class="date" size="10"/></label>
+			<label>Entrez une date ici : <input type="text" class="date today" size="10"/></label>
 			<label>Dites nous en plus : <input type="text"/></label>
 
 
@@ -89,6 +93,11 @@
 
 		</form>
 
+	</article>
+
+	<article id="" class="container span12">
+		Click on this button to reset all first date input to today's date :
+		<button id="cmdToday">Today is the day</button>
 	</article>
 
 </body>
