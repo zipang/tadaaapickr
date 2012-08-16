@@ -4,7 +4,7 @@ tadaaapickr
 A lightweight, accessible jQuery DatePicker, styled with Bootstrap.. Tadaaa !!
 
 * View the project page : http://zipang.github.com/tadaaapickr
-* Try the demos : http://zipang.github.com/tadaaapickr/testPage.html
+* Try the demos : http://zipang.github.com/tadaaapickr/testpage.html
 * Fork it on github : http://github.com/zipang/tadaaapickr
 
 ### Features
@@ -39,14 +39,18 @@ Create one ore more text input to tie the plugin to:
 
 Finally bind the plugin to the input textbox like this:
 
+```javascript
     $("#txtDate").datepicker();
+```
 
 Pass some options like this :
 
+```javascript
     $("input.date.french").datepicker({
         dateFormat: "dd/mm/yyyy",
         language: "fr"
     });
+```
 
 ### Internationalization
 
@@ -63,24 +67,30 @@ One way to set these setting is to use the `locale` option.
 
 So the following 2 calls are equivalents :
 
+```javascript
     $("input.date.french").datepicker({
         dateFormat: "dd/mm/yyyy",
         firstDayOfWeek: 1,
         language: "fr"
     });
+```
 
 or
 
+```javascript
     $("input.date.french").datepicker({
         locale: "fr"
     });
+```
 
 If all your date pickers have the same locale settings (there is a great chance for that in fact) then, you can set once and for all the default locale setting and forget it after.
 This gives us the third equivalent formulation of the 2 precedent examples :
 
+```javascript
     $.fn.datepicker.Calendar.setDefaultLocale("fr");
     $("input.date.french").datepicker();
     $("#startDate").datepicker({startDate: '01/01/2000'}); // will also get the french locale
+```
 
 
 Acknowlegements
