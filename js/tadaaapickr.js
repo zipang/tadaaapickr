@@ -258,6 +258,18 @@
 				case 40: // DOWN
 					return (e.ctrlKey) ? this.navigate(+1, "year")  : this.navigate(+7, "days");
 
+				case 33: // PG-UP
+					return (e.ctrlKey) ? this.navigate(-10, "years")  : this.navigate(-1, "year");
+
+				case 34: // PG-DOWN
+					return (e.ctrlKey) ? this.navigate(+10, "years")  : this.navigate(+1, "year");
+
+				case 35: // END
+					return this.navigate(+1, "month");
+
+				case 36: // HOME
+					return this.navigate(-1, "month");
+
 				case 9:  // TAB
 				case 13: // ENTER
 					// Send the 'Date change' event
@@ -272,7 +284,7 @@
 		// Key handler when the calendar is not shown
 		inactiveKeyHandler: function(e) {
 
-			if (e.keyCode < 41 && e.keyCode > 36) { // Arrows keys > make the calendar reappear
+			if (e.keyCode < 41 && e.keyCode > 32) { // Arrows keys > make the calendar reappear
 				this.show(e);
 				this._keyHandler = this.activeKeyHandler;
 
