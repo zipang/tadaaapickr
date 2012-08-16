@@ -4,34 +4,23 @@
  */
 (function define(namespace) {
 
-	// unit of times durations (in ms)
-	var ONE_HOUR = 1000*3600,
-		ONE_DAY  = ONE_HOUR*24,
-		ONE_WEEK = ONE_DAY*7,
-		durations = {
-			h: ONE_HOUR, hours: ONE_HOUR,
-			d: ONE_DAY,  days:  ONE_DAY,
-			w: ONE_WEEK, weeks: ONE_WEEK
-		};
-
 	var validParts = /dd?|mm?|MM(?:M)?|yy(?:yy)?/g;
-
-	var originalParse = Date.parse; // save the original method in case we override it
 
 	/**
 	 * Adds n units of time to date d
 	 * @param d:{Date}
 	 * @param n:{Number} (can be negative)
-	 * @param unit:{String}
+	 * @param unit:{String} Accepted values are only : d|days, m|months, y|years
 	 * @return {Date}
 	 */
 	function addToDate(d, n, unit) {
-		if (durations[unit]) { // units with constant durations are easy to deal with
-			return new Date(d.getTime() + n * durations[unit]);
-		} else if ((unit == "m") || (unit == "months")) {
-			return new Date(Date.UTC(d.getFullYear(), d.getMonth() + n, d.getDate()));
-		} else if ((unit == "y") || (unit == "years")) {
-			return new Date(Date.UTC(d.getFullYear() + n, d.getMonth(), d.getDate()));
+		var unitCode = unit.charAt(0);
+		if (unitCode == "d") { // units with constant durations are easy to deal with
+			return new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);
+		} else if (unitCode == "m") {
+			return new Date(d.getFullYear(), d.getMonth() + n, d.getDate());
+		} else if (unitCode == "y") {
+			return new Date(d.getFullYear() + n, d.getMonth(), d.getDate());
 		}
 	}
 
@@ -113,11 +102,11 @@
 
 		if (matches && matches.length == 3) {
 			var positions = format.positions; // tells us where the year, month and day are located
-			return new Date(Date.UTC(
+			return new Date(
 				matches[positions.Y],
 				matches[positions.M] - 1,
 				matches[positions.D]
-			));
+			);
 
 		} else { // fall back on the Date constructor that can parse ISO8601 and other (english) formats..
 			var parsed = new Date(str);
