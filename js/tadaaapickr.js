@@ -88,7 +88,7 @@
 			var $target = this.$target, targetPos = $target.offset(),
 				inputDate = Date.parse($target.val(), this.parsedFormat);
 
-			this.setSelectedDate(inputDate, true)
+			this.setDate(inputDate)
 				.refreshDays() // coming from another input needs us to refresh the day headers
 				.refresh();
 			this.$cal.css({left: targetPos.left, top: targetPos.top + $target.outerHeight(false)})
@@ -118,7 +118,7 @@
 
 			// find the first date to display
 			while (d.getDay() != this.firstDayOfWeek) {
-				d = Date.add(d, -1, "days");
+				d = Date.add(d, -1, "day");
 			}
 
 			for (var i=0; i < 6*7; i++) {
@@ -134,7 +134,7 @@
 					this.selectedIndex = i;
 					dayCell.className += " active";
 				}
-				d = Date.add(d, 1, "days");
+				d = Date.add(d, 1, "day");
 			}
 
 			return this;
@@ -144,7 +144,7 @@
 		// When fantomMove is TRUE, don't update the selected date
 		navigate: function(offset, unit, fantomMove) {
 
-			// cancel the first move when no date was selected : the default date will be displayed as a first move
+			// Cancel the first move when no date was selected : the default date will be displayed instead
 			if (!fantomMove && !this.selectedDate) offset = 0;
 
 			var newDate = Date.add((fantomMove ? this.displayedDate : this.selectedDate || this.defaultDate), offset, unit),
@@ -154,7 +154,7 @@
 				if (fantomMove) {
 					this.displayedDate = newDate;
 				} else {
-					this.setSelectedDate(newDate, true);
+					this.setDate(newDate);
 				}
 				$days.removeClass("active old new");
 				this.refresh(); // full calendar display refresh needed
@@ -164,10 +164,12 @@
 				$($days[this.selectedIndex]).removeClass("active");
 				this.selectedIndex += offset;
 				$($days[this.selectedIndex]).addClass("active");
-				this.setSelectedDate(newDate, true);
+				this.setDate(newDate);
 			}
 
-			return this;
+			return false; // WARNING !! : Dirty Hack here to prevent arrow's navigation to deselect date input.
+						// We should return 'this' instead to be consistant and chainable, but the code in activeKeyHandler
+						// would be less optimized
 		},
 
 		/**
@@ -190,42 +192,32 @@
 
 		// Set a new start date
 		setStartDate : function (d) {
-			this.startDate = d;
+			this.startDate = atmidnight(d);
 			return this;
 		},
 
 		// Set a new end date
 		setEndDate : function (d) {
-			this.endDate = d;
+			this.endDate = atmidnight(d);
 			return this;
 		},
 
 		// Set a new selected date
-		setSelectedDate : function (d, update) {
-			var oldDate = this.selectedDate;
+		setDate : function (d) {
 
-			if (d) {
+			if (atmidnight(d)) {
 				this.selectedDate = d;
 				this.displayedDate = new Date(d); // don't share the same date instance !
 
-				if (update) {
-					this.$target.val(Date.format(d, this.parsedFormat)).select().data("date", d);
-					this.dirty = false;
-				} else {
-					this.dirty = (!oldDate || (oldDate - d));
-				}
+				this.$target.data("date", d).val(Date.format(d, this.parsedFormat)).select();
 			} else {
 				this.selectedDate = this.selectedIndex = null;
 				this.displayedDate = new Date(this.defaultDate);
 
-				if (update) {
-					this.$target.val("").select().data("date", null);
-					this.dirty = false;
-				} else {
-					this.dirty = (oldDate != null);
-				}
+				this.$target.data("date", null).val("").select();
 			}
 			this.displayedDate.setDate(1);
+			this.dirty = false;
 			return this;
 		},
 
@@ -249,16 +241,16 @@
 			switch (e.keyCode) {
 
 				case 37: // LEFT
-					return (e.ctrlKey) ? this.navigate(-1, "months") : this.navigate(-1, "days");
+					return (e.ctrlKey) ? this.navigate(-1, "month") : this.navigate(-1, "day");
 
 				case 38: // UP
-					return (e.ctrlKey) ? this.navigate(-1, "years")  : this.navigate(-7, "days");
+					return (e.ctrlKey) ? this.navigate(-1, "year")  : this.navigate(-7, "days");
 
 				case 39: // RIGHT
-					return (e.ctrlKey) ? this.navigate(+1, "months") : this.navigate(+1, "days");
+					return (e.ctrlKey) ? this.navigate(+1, "month") : this.navigate(+1, "day");
 
 				case 40: // DOWN
-					return (e.ctrlKey) ? this.navigate(+1, "years")  : this.navigate(+7, "days");
+					return (e.ctrlKey) ? this.navigate(+1, "year")  : this.navigate(+7, "days");
 
 				case 9:  // TAB
 				case 13: // ENTER
@@ -294,10 +286,10 @@
 
 			if (!newDate) { // invalid or empty input
 				// restore the precedent value or erase the bad input
-				this.setSelectedDate(this.required ? this.selectedDate || this.defaultDate : null, true);
+				this.setDate(this.required ? this.selectedDate || this.defaultDate : null);
 
 			} else if (newDate - this.selectedDate) {
-				this.setSelectedDate(newDate, true);
+				this.setDate(newDate);
 				this.$target.trigger({type: "dateChange", date: this.selectedDate});
 			}
 
@@ -347,10 +339,10 @@
 			var $day = $(this), day = +$day.text(),
 				firstDayOfMonth = cal.displayedDate,
 				monthOffset = ($day.hasClass("old") ? -1 : ($day.hasClass("new") ? +1 : 0)),
-				newDate = new Date(Date.UTC(firstDayOfMonth.getFullYear(), firstDayOfMonth.getMonth() + monthOffset, day));
+				newDate = new Date(firstDayOfMonth.getFullYear(), firstDayOfMonth.getMonth() + monthOffset, day);
 
 			// Save selected
-			cal.setSelectedDate(newDate, true).refresh().hide();
+			cal.setDate(newDate).refresh().hide();
 
 			// Update the $input control
 			cal.$target.trigger({type: "dateChange", date: newDate});
@@ -365,9 +357,9 @@
 			if (!cal) return;
 
 			if ($(this).hasClass("prev")) {
-				cal.navigate(-1, "months", true);
+				cal.navigate(-1, "month", true);
 			} else if ($(this).hasClass("next")) {
-				cal.navigate(+1, "months", true);
+				cal.navigate(+1, "month", true);
 			}
 		});
 
@@ -469,6 +461,7 @@
 	function repeat(str, n) {
 		return (n == 0) ? "" : Array(n+1).join(str);
 	}
+	function atmidnight(d) {return (d ? d.setHours(0, 0, 0, 0) : null);}
 	function today() {return new Date((new Date).setHours(0, 0, 0, 0));}
 	function yyyymm(d) {return d.getFullYear() * 100 + d.getMonth();}
 	function stopPropagation(e) {e.stopPropagation();}
