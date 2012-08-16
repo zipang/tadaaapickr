@@ -55,6 +55,12 @@
 
 		init : function (options) {
 
+			var loc = options.locale;
+			if (loc) { // retrieve the defaults options associated with this locale
+				var locale = Calendar.locales[loc];
+				$.extend(options, {language: loc}, locale.defaults);
+			}
+
 			// Retrieve or reuse the calendar widget
 			// If more than one calendar must be displayed at the same time, different calIDs must be provided
 			this.$cal = Calendar.build(options.calId, options.language);
@@ -413,7 +419,7 @@
 	 */
 	Calendar.setDefaults = function(options) {
 		$.extend(defaults, options);
-	}
+	};
 
 	/**
 	 * Hide any instance of any active calendar widget (they should be only one)
