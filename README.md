@@ -56,9 +56,12 @@ Pass some options like this :
 
 Several options are related to the internationalization of the dates, `language` being the main one because it defines the way months and days will be named.
 
-* `language` String. A 2 letters ISO 639-1 code defining the language to be used for day and months representation .(default: 'en')
-* `dateFormat` String defining the input format. d, dd, m, mm, yy, yyyy are the usual suspects to define the format parts. (default: 'mm/dd/yyyy')
-* `firstDayOfWeek` Number between 0and 6 to define the first day of the week (default 0 : Sunday)
+<table>
+  <tr><th>Option</th><th>Type</th><th>Description</th><th>Default</th></tr>
+  <tr><td>`language`</td><td>String</td><td>A 2 letters ISO 639-1 code defining the language to be used for day and months representation. </td><td>(default: 'en')</td></tr>
+  <tr><td>`dateFormat`</td><td>String</td><td>Defining the input format. d, dd, m, mm, yy, yyyy are the usual suspects to define the format parts. </td><td>(default: 'mm/dd/yyyy')</td></tr>
+  <tr><td>`firstDayOfWeek`</td><td>Number</td><td>Number between 0 and 6 to define the first day of the week. </td><td>(default 0 : Sunday)</td></tr>
+</table>
 
 These options can be set individually, but as we know, they are usually related. In France for example, we usually speak french, we have a date format where the days come first (which seems more logical in fact) and, like in the Bible, the first day of our week is Monday.
 
@@ -127,7 +130,7 @@ Acknowlegements
 
 This plugin would not have been made without the precedent awesome work of :
 
-* [Stefan Petre](http://www.eyecon.ro) and [Andrew Rowls](https://github.com/eternicode) who started the first versions[1] [2] of a date picker styled with Bootstrap.
+* [Stefan Petre](http://www.eyecon.ro) and [Andrew Rowls](https://github.com/eternicode) who started the first versions [1] [2] of a date picker styled with Bootstrap.
 * [Gautam Lad](https://github.com/glad) for the way its glDatePicker methods can be called via the same jQuery syntax.
 * [John Resig](https://github.com/jeresig) because he gave us jQuery, and we forgot about Prototype..
 
