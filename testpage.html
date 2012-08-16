@@ -11,6 +11,7 @@
 
 	<script type="text/javascript" src="js/CalendarTools.js"></script>
 	<script type="text/javascript" src="js/locales/dates.locales.fr.js"></script>
+	<script type="text/javascript" src="js/locales/dates.locales.ja.js"></script>
 
 	<script type="text/javascript">
 		$(function onload() {
@@ -19,6 +20,11 @@
 				language: "fr",
 				dateFormat: "dd/mm/yyyy",
 				firstDayOfWeek: 1
+			});
+			$("article[lang='ja'] input.date").datepicker({
+				language: "ja",
+				dateFormat: "yyyy-mm-dd",
+				firstDayOfWeek: 0
 			});
 		});
 	</script>
@@ -60,6 +66,25 @@
 			<label>Et puis quoi encore : <input id="txtToDate" type="text" class="date" size="10" /></label>
 
 			<h2>Dans une galaxie très lointaine..</h2>
+			<label>C'est à ce moment que je suis né : <input type="text" class="date" size="10" /></label>
+
+		</form>
+
+	</article>
+
+
+	<article id="japaneseTest" class="container span5" lang="ja">
+
+		<form class="well">
+			<h2>むかーし、昔</h2>
+			<label>Entrez une date ici : <input type="text" class="date" size="10"/></label>
+			<label>Dites nous en plus : <input type="text"/></label>
+
+
+			<h2>ひとむかし前..</h2>
+			<label>Et puis quoi encore : <input type="text" class="date" size="10" /></label>
+
+			<h2>銀河系のはて..</h2>
 			<label>C'est à ce moment que je suis né : <input type="text" class="date" size="10" /></label>
 
 		</form>
