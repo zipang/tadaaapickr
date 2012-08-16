@@ -60,12 +60,11 @@ Several options are related to the internationalization of the dates, `language`
 * `dateFormat` (default: 'mm/dd/yyyy')
 * `firstDayOfWeek` (default 0)
 
-These options can be set individually, but as we know, they are usually related
+These options can be set individually, but as we know, they are usually related. In France for example, we usually speack french, we have a date format where the days come first (which seems more logical in fact) and, like in the Bible, the first day of our week is Monday.
 
-So, the internationalization files come with defaults settings for these 3 attributes.
-One way to set these setting is to use the `locale` option.
+Hopefully, the internationalization files bundled with tadaaapickr come with some defaults settings for these 3 attributes and the way to access these default settings is to use the `locale` option.
 
-So the following 2 calls are equivalents :
+So that the following call :
 
 ```javascript
     $("input.date.french").datepicker({
@@ -75,7 +74,7 @@ So the following 2 calls are equivalents :
     });
 ```
 
-or
+can be made shorter by specifying only the `locale` option :
 
 ```javascript
     $("input.date.french").datepicker({
@@ -92,6 +91,36 @@ This gives us the third equivalent formulation of the 2 precedent examples :
     $("#startDate").datepicker({startDate: '01/01/2000'}); // will also get the french locale
 ```
 
+### Programmable API : Date picker control
+
+The calendar plugin has many built-in features that you can access as you wish, even after that it has been created.
+
+For example, if you want to change the current date, or change any predefined options, you can do it programmatically in two ways :
+
+The first way is to use the same jQuery selector syntax to access the same input elements that had been initialiazed as date pickers, and to send them new commands that can be chained the jQuery way :
+
+```javascript
+	// Narrow our date picker to events that occured during the French Revolution
+    $("input#frenchRevolutionEvents")
+    	.datepicker("setStartDate", "05/05/1789")	// Estates-General of 1789
+    	.datepicker("setDate", "14/07/1789") 		// Storming of the Bastille
+    	.datepicker("setEndDate", "20/06/1791");	// Flight to Varennes
+```
+
+This allows to send commands to multiple items at the same time.
+
+The second -more traditional- way, is to access the Calendar object defined on any initialized datepicker that way :
+
+```javascript
+	// Narrow our date picker to events during the French Revolution
+    var frenchCalendar = $("input#frenchRevolutionEvents").data("calendar");
+    frenchCalendar
+    	.setStartDate(new Date(1789, 5, 5))
+    	.setDate(new Date(1989, 7, 14));
+    	.setEndDate(new Date(1981, 6, 20))
+```
+
+<note>Note that in both cases, methods expecting date parameters can be passed as arguments a real Date object, or a String representing a date in the date picker's declared format. </note>
 
 Acknowlegements
 ---------------
