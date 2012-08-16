@@ -56,11 +56,11 @@ Pass some options like this :
 
 Several options are related to the internationalization of the dates, `language` being the main one because it defines the way months and days will be named.
 
-* `language` (default: 'en')
-* `dateFormat` (default: 'mm/dd/yyyy')
-* `firstDayOfWeek` (default 0)
+* `language` String. A 2 letters ISO 639-1 code defining the language to be used for day and months representation .(default: 'en')
+* `dateFormat` String defining the input format. d, dd, m, mm, yy, yyyy are the usual suspects to define the format parts. (default: 'mm/dd/yyyy')
+* `firstDayOfWeek` Number between 0and 6 to define the first day of the week (default 0 : Sunday)
 
-These options can be set individually, but as we know, they are usually related. In France for example, we usually speack french, we have a date format where the days come first (which seems more logical in fact) and, like in the Bible, the first day of our week is Monday.
+These options can be set individually, but as we know, they are usually related. In France for example, we usually speak french, we have a date format where the days come first (which seems more logical in fact) and, like in the Bible, the first day of our week is Monday.
 
 Hopefully, the internationalization files bundled with tadaaapickr come with some defaults settings for these 3 attributes and the way to access these default settings is to use the `locale` option.
 
@@ -82,7 +82,7 @@ can be made shorter by specifying only the `locale` option :
     });
 ```
 
-If all your date pickers have the same locale settings (there is a great chance for that in fact) then, you can set once and for all the default locale setting and forget it after.
+If all your date pickers have the same locale settings (there is a great chance for that in fact) then, you can set once and for all the default locale and forget all about it in the subsequent calls.
 This gives us the third equivalent formulation of the 2 precedent examples :
 
 ```javascript
