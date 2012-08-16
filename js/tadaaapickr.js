@@ -90,7 +90,7 @@
 
 			this.setDate(inputDate)
 				.refreshDays() // coming from another input needs us to refresh the day headers
-				.refresh();
+				.refresh().select();
 			this.$cal.css({left: targetPos.left, top: targetPos.top + $target.outerHeight(false)})
 				.slideDown(200).addClass("active").data("calendar", this);
 
@@ -167,6 +167,7 @@
 				this.setDate(newDate);
 			}
 
+			this.select();
 			return false; // WARNING !! : Dirty Hack here to prevent arrow's navigation to deselect date input.
 						// We should return 'this' instead to be consistant and chainable, but the code in activeKeyHandler
 						// would be less optimized
@@ -190,6 +191,11 @@
 			return this;
 		},
 
+		select: function() {
+			this.$target.select();
+			return this;
+		},
+
 		// Set a new start date
 		setStartDate : function (d) {
 			this.startDate = atmidnight(d);
@@ -209,12 +215,12 @@
 				this.selectedDate = d;
 				this.displayedDate = new Date(d); // don't share the same date instance !
 
-				this.$target.data("date", d).val(Date.format(d, this.parsedFormat)).select();
+				this.$target.data("date", d).val(Date.format(d, this.parsedFormat));
 			} else {
 				this.selectedDate = this.selectedIndex = null;
 				this.displayedDate = new Date(this.defaultDate);
 
-				this.$target.data("date", null).val("").select();
+				this.$target.data("date", null).val("");
 			}
 			this.displayedDate.setDate(1);
 			this.dirty = false;
@@ -342,7 +348,7 @@
 				newDate = new Date(firstDayOfMonth.getFullYear(), firstDayOfMonth.getMonth() + monthOffset, day);
 
 			// Save selected
-			cal.setDate(newDate).refresh().hide();
+			cal.setDate(newDate).refresh().select().hide();
 
 			// Update the $input control
 			cal.$target.trigger({type: "dateChange", date: newDate});
@@ -457,14 +463,15 @@
 		}
 	};
 
-	// UTILITIES
-	function repeat(str, n) {
-		return (n == 0) ? "" : Array(n+1).join(str);
-	}
-	function atmidnight(d) {return (d ? d.setHours(0, 0, 0, 0) : null);}
-	function today() {return new Date((new Date).setHours(0, 0, 0, 0));}
+	// DATE UTILITIES
+	Date.prototype.atMidnight = function() {this.setHours(0, 0, 0, 0); return this;}
+	function atmidnight(d) {return (d ? new Date(d.atMidnight()) : null);}
+	function today() {return (new Date()).atMidnight();}
 	function yyyymm(d) {return d.getFullYear() * 100 + d.getMonth();}
+
 	function stopPropagation(e) {e.stopPropagation();}
+
+	function repeat(str, n) {return (n == 0) ? "" : Array(n+1).join(str);}
 
 })(jQuery);
 
