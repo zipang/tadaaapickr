@@ -46,14 +46,12 @@
 	 * @param options
 	 */
 	var Calendar = function($target, options) {
-		this.$target = $target;
-		this.settings = options;
-		this.init(options);
+		this._init(this.$target = $target, this.settings = options);
 	};
 
 	Calendar.prototype = {
 
-		init : function (options) {
+		_init : function ($target, options) {
 
 			var loc = options.locale;
 			if (loc) { // retrieve the defaults options associated with this locale
@@ -73,8 +71,12 @@
 			this.locale = Calendar.getLocale(options.language);
 			this.defaultDate = (options.defaultDate || today()); // what to display on first appearance ?
 
+			// Retrieve the current input value and reformat it
+			this.setDate(Date.parse($target.val(), this.parsedFormat));
+
 			// Bind all the required event handlers on the input element
-			this.$target.click(stopPropagation).focus($.proxy(this.show, this))
+			$target.data("calendar", this)
+				.click(stopPropagation).focus($.proxy(this.show, this))
 				.keydown($.proxy(this.keyHandler, this)).blur($.proxy(this.validate, this));
 		},
 
@@ -117,7 +119,7 @@
 			var d    = new Date(this.displayedDate.getTime()),
 				displayedMonth = yyyymm(this.displayedDate),
 				dday = (this.selectedDate ? this.selectedDate.getTime() : -1),
-				$cal = this.$cal, $days = $cal.data("$days");
+				$cal = this.$cal, $days = $cal.data("$days").removeClass("active old new");
 
 			// refresh month in header
 			$cal.data("$header").text(Date.format(d, "MMM yyyy", this.settings.language));
@@ -162,7 +164,6 @@
 				} else {
 					this.setDate(newDate);
 				}
-				$days.removeClass("active old new");
 				this.refresh(); // full calendar display refresh needed
 
 			} else {
@@ -215,6 +216,7 @@
 		},
 
 		// Set a new selected date
+		// When no date is passed, retrieve the input element's val and try to parse it
 		setDate : function (d) {
 
 			if (atmidnight(d)) {
@@ -356,6 +358,7 @@
 		// Define the event handlers
 		$cal.on("click", "td.day", function dayClick(e) {
 			e.stopPropagation();
+			e.preventDefault(); // IMPORTANT: prevent the input to loose focus!
 
 			var cal = $cal.data("calendar");
 			if (!cal) return;
@@ -365,11 +368,15 @@
 				monthOffset = ($day.hasClass("old") ? -1 : ($day.hasClass("new") ? +1 : 0)),
 				newDate = new Date(firstDayOfMonth.getFullYear(), firstDayOfMonth.getMonth() + monthOffset, day);
 
-			// Save selected
-			cal.setDate(newDate).refresh().select().hide();
-
 			// Update the $input control
-			cal.$target.trigger({type: "dateChange", date: newDate});
+			cal.setDate(newDate).select().refresh();
+			// let a short moment happen to hide our calendar (so that the focus event can happen in IE)
+
+			// Send the event asynchronously
+			setTimeout(function() {
+				cal.hide();
+				cal.$target.trigger({type: "dateChange", date: newDate});
+			}, 0);
 
 		});
 
