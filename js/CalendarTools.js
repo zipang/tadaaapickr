@@ -15,7 +15,7 @@
 	 */
 	function addToDate(d, n, unit) {
 		var unitCode = unit.charAt(0);
-		if (unitCode == "d") { // units with constant durations are easy to deal with
+		if (unitCode == "d") {
 			return new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);
 		} else if (unitCode == "m") {
 			return new Date(d.getFullYear(), d.getMonth() + n, d.getDate());
