@@ -75,16 +75,19 @@
 			this.setDate(Date.parse($target.val(), this.parsedFormat));
 
 			// Bind all the required event handlers on the input element
+			var show = $.proxy(this.show, this);
 			$target.data("calendar", this)
-				.click(stopPropagation).focus($.proxy(this.show, this))
+				.click(show).focus(show)
 				.keydown($.proxy(this.keyHandler, this)).blur($.proxy(this.validate, this));
 		},
 
 		// Show a calendar displaying the current input value
 		show : function (e) {
-			e.stopPropagation();
+			nope(e);
 
-			var $cal = this.$cal;
+			var $cal = this.$cal, $target = this.$target;
+
+			if (this.$target.data("dirty")) return; // focus event due to our field update
 
 			if ($cal.hasClass("active")) {
 				if ($cal.data("calendar") === this) {
@@ -93,7 +96,7 @@
 				Calendar.hide($cal);
 			}
 
-			var $target = this.$target, targetPos = $target.offset(),
+			var targetPos = $target.offset(),
 				inputDate = Date.parse($target.val(), this.parsedFormat);
 
 			this.setDate(inputDate)
@@ -199,7 +202,9 @@
 		},
 
 		select: function() {
+			this.$target.data("dirty", true);
 			this.$target.select();
+			this.$target.data("dirty", false);
 			return this;
 		},
 
@@ -357,8 +362,7 @@
 
 		// Define the event handlers
 		$cal.on("click", "td.day", function dayClick(e) {
-			e.stopPropagation();
-			e.preventDefault(); // IMPORTANT: prevent the input to loose focus!
+			nope(e); // IMPORTANT: prevent the input to loose focus!
 
 			var cal = $cal.data("calendar");
 			if (!cal) return;
@@ -381,8 +385,7 @@
 		});
 
 		$cal.on("click", "th.month", function monthMove(e) {
-			e.stopPropagation();
-			e.preventDefault(); // IMPORTANT: prevent the input to loose focus!
+			nope(e); // IMPORTANT: prevent the input to loose focus!
 
 			var cal = $cal.data("calendar");
 			if (!cal) return;
@@ -494,7 +497,7 @@
 	function today() {return (new Date()).atMidnight();}
 	function yyyymm(d) {return d.getFullYear() * 100 + d.getMonth();}
 
-	function stopPropagation(e) {e.stopPropagation();}
+	function nope(e) {e.stopPropagation(); e.preventDefault();}
 
 	function repeat(str, n) {return (n == 0) ? "" : Array(n+1).join(str);}
 
