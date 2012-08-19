@@ -81,6 +81,12 @@
 				.keydown($.proxy(this.keyHandler, this)).blur($.proxy(this.validate, this));
 		},
 
+		_parse : function(d) {
+			if (!d) return null;
+			if (typeof d == "string") return Date.parse(d, this.parsedFormat);
+			return atmidnight(d);
+		},
+
 		// Show a calendar displaying the current input value
 		show : function (e) {
 			nope(e);
@@ -112,6 +118,24 @@
 		hide: function() {
 			Calendar.hide(this.$cal);
 			this._keyHandler = this.inactiveKeyHandler;
+			return this;
+		},
+
+		/**
+		 * Render the column headers for the days in the proper localization
+		 * @param loc
+		 * @param firstDayOfWeek (0 : Sunday, 1 : Monday)
+		 */
+		refreshDays: function() {
+
+			var locale = this.locale,
+				firstDayOfWeek = this.firstDayOfWeek;
+
+			// Fill the day's names
+			this.$cal.data("$dayHeaders").each(function(i, th) {
+				$(th).text(locale.daysMin[i + firstDayOfWeek]);
+			});
+
 			return this;
 		},
 
@@ -183,40 +207,20 @@
 						// would be less optimized
 		},
 
-		/**
-		 * Render the column headers for the days in the proper localization
-		 * @param loc
-		 * @param firstDayOfWeek (0 : Sunday, 1 : Monday)
-		 */
-		refreshDays: function() {
-
-			var locale = this.locale,
-				firstDayOfWeek = this.firstDayOfWeek;
-
-			// Fill the day's names
-			this.$cal.data("$dayHeaders").each(function(i, th) {
-				$(th).text(locale.daysMin[i + firstDayOfWeek]);
-			});
-
-			return this;
-		},
-
 		select: function() {
-			this.$target.data("dirty", true);
-			this.$target.select();
-			this.$target.data("dirty", false);
+			this.$target.data("dirty", true).select().data("dirty", false);
 			return this;
 		},
 
 		// Set a new start date
 		setStartDate : function (d) {
-			this.startDate = atmidnight(d);
+			this.startDate = this._parse(d);
 			return this;
 		},
 
 		// Set a new end date
 		setEndDate : function (d) {
-			this.endDate = atmidnight(d);
+			this.endDate = this._parse(d);
 			return this;
 		},
 
@@ -224,7 +228,7 @@
 		// When no date is passed, retrieve the input element's val and try to parse it
 		setDate : function (d) {
 
-			if (atmidnight(d)) {
+			if (this._parse(d)) {
 				this.selectedDate = d;
 				this.displayedDate = new Date(d); // don't share the same date instance !
 
@@ -242,8 +246,7 @@
 
 		// Set a new date format
 		setDateFormat: function(format) {
-			this.dateFormat = format;
-			this.authorizedChars = "0123456789" + (this.parsedFormat = Date.parseFormat(format)).separators.join("");
+			this.parsedFormat = Date.parseFormat(this.dateFormat = format);
 			return this;
 		},
 
@@ -254,7 +257,7 @@
 			return this._keyHandler(e);
 		},
 
-		// Add keyboard navigation to the input element
+		// Keyboard navigation when the calendar is active
 		activeKeyHandler: function(e) {
 
 			switch (e.keyCode) {
@@ -328,7 +331,7 @@
 		}
 	};
 
-	// Empty HTML content of the calendar
+	// Calendar (empty) HTML template
 	Calendar.template = "<table class='table-condensed'><thead>" // calendar headers include the month and day names
 		+ "<tr><th class='prev month'>&laquo;</th><th class='month name' colspan='5'></th><th class='next month'>&raquo;</th></tr>"
 		+ "<tr>" + repeat("<th class='dow'/>", 7) + "</tr>"
@@ -361,7 +364,7 @@
 		$cal.data("$dayHeaders", $("th.dow", $cal));
 
 		// Define the event handlers
-		$cal.on("click", "td.day", function dayClick(e) {
+		$cal.on("click", "td.day", function(e) {
 			nope(e); // IMPORTANT: prevent the input to loose focus!
 
 			var cal = $cal.data("calendar");
@@ -384,7 +387,7 @@
 
 		});
 
-		$cal.on("click", "th.month", function monthMove(e) {
+		$cal.on("click", "th.month", function(e) {
 			nope(e); // IMPORTANT: prevent the input to loose focus!
 
 			var cal = $cal.data("calendar");
