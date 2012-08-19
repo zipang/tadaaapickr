@@ -128,12 +128,12 @@
 		 */
 		refreshDays: function() {
 
-			var locale = this.locale,
+			var dayHeaders = this.locale.daysMin,
 				firstDayOfWeek = this.firstDayOfWeek;
 
 			// Fill the day's names
 			this.$cal.data("$dayHeaders").each(function(i, th) {
-				$(th).text(locale.daysMin[i + firstDayOfWeek]);
+				$(th).text(dayHeaders[i + firstDayOfWeek]);
 			});
 
 			return this;
