@@ -25,6 +25,21 @@
 	}
 
 	/**
+	 * Get the difference (duration) between two dates/times in one of the following units :
+	 * 'h|hours', 'd|days', 'w|weeks', 'm|months', 'y|years'
+	 */
+	function elapsed(unit, d1, d2) {
+		var unitCode = unit.charAt(0);
+		if (unitCode == "d") {
+			return Math.round((d2-d1)/86400000); // 1000*60*60*24ms
+		} else if (unitCode == "m") {
+			return (d1.getFullYear()+d1.getMonth()*12 - d2.getFullYear()+d2.getMonth()*12)/12;
+		} else if (unitCode == "y") {
+			return (d1.getFullYear() - d2.getFullYear());
+		}
+	};
+
+	/**
 	 * Decompose a format string into its separators and date parts
 	 * @param fmt
 	 * @return {Object}
@@ -118,6 +133,7 @@
 
 	var exportables = {
 		add: addToDate,
+		elapsed: elapsed,
 		parseFormat: parseFormat,
 		format: formatDate,
 		parse: parseDate,
