@@ -82,7 +82,7 @@
 		},
 
 		_parse : function(d) {
-			if (!d) return null;
+			if (!d) return undefined;
 			if (typeof d == "string") return Date.parse(d, this.parsedFormat);
 			return atmidnight(d);
 		},
@@ -145,8 +145,7 @@
 
 			var d    = new Date(this.displayedDate.getTime()),
 				displayedMonth = yyyymm(this.displayedDate),
-				dday = (this.selectedDate ? this.selectedDate.getTime() : -1),
-				$cal = this.$cal, $days = $cal.data("$days").removeClass("active old new");
+				$cal = this.$cal, $days = $cal.data("$days");
 
 			// refresh month in header
 			$cal.data("$header").text(Date.format(d, "MMM yyyy", this.settings.language));
@@ -156,19 +155,29 @@
 				d = Date.add(d, -1, "day");
 			}
 
-			for (var i=0; i < 6*7; i++) {
-				var month = yyyymm(d), dayCell = $days[i];
+			// Calculate cell index of the important dates
+			var dday = this.selectedIndex = (this.selectedDate ? Date.elapsed("days", d, this.selectedDate) : undefined),
+				startIndex = (this.startDate ? Date.elapsed("days", d, this.startDate) : -Infinity),
+				endIndex   = (this.endDate ? Date.elapsed("days", d, this.endDate) : +Infinity);
+
+
+			for (var i = 0; i < 6*7; i++) {
+				var month = yyyymm(d), dayCell = $days[i], className = "day";
 				dayCell.innerHTML = d.getDate();
+
 				if (month < displayedMonth) {
-					dayCell.className += " old";
+					className += " old";
 
 				} else if (month > displayedMonth) {
-					dayCell.className += " new";
+					className += " new";
 
-				} else if (dday == d.getTime()) {
-					this.selectedIndex = i;
-					dayCell.className += " active";
+				} else if (i == dday) {
+					className += " active";
 				}
+				if (i < startIndex || i > endIndex) {
+					className += " disabled";
+				}
+				dayCell.className = className;
 				d = Date.add(d, 1, "day");
 			}
 
@@ -184,6 +193,8 @@
 
 			var newDate = Date.add((fantomMove ? this.displayedDate : this.selectedDate || this.defaultDate), offset, unit),
 				$cal = this.$cal, $days = $cal.data("$days");
+
+			if (newDate < this.startDate || newDate > this.endDate) return;
 
 			if (yyyymm(newDate) != yyyymm(this.displayedDate) || !this.selectedIndex) {
 				if (fantomMove) {
@@ -229,12 +240,12 @@
 		setDate : function (d) {
 
 			if (this._parse(d)) {
-				this.selectedDate = d;
+				this.selectedDate  = d;
 				this.displayedDate = new Date(d); // don't share the same date instance !
 
 				this.$target.data("date", d).val(Date.format(d, this.parsedFormat));
 			} else {
-				this.selectedDate = this.selectedIndex = null;
+				this.selectedDate  = this.selectedIndex = null;
 				this.displayedDate = new Date(this.defaultDate);
 
 				this.$target.data("date", null).val("");
@@ -375,6 +386,8 @@
 				monthOffset = ($day.hasClass("old") ? -1 : ($day.hasClass("new") ? +1 : 0)),
 				newDate = new Date(firstDayOfMonth.getFullYear(), firstDayOfMonth.getMonth() + monthOffset, day);
 
+			if (newDate < cal.startDate || newDate > cal.endDate) return;
+
 			// Update the $input control
 			cal.setDate(newDate).select().refresh();
 			// let a short moment happen to hide our calendar (so that the focus event can happen in IE)
@@ -496,7 +509,7 @@
 
 	// DATE UTILITIES
 	Date.prototype.atMidnight = function() {this.setHours(0, 0, 0, 0); return this;}
-	function atmidnight(d) {return (d ? new Date(d.atMidnight()) : null);}
+	function atmidnight(d) {return (d ? new Date(d.atMidnight()) : undefined);}
 	function today() {return (new Date()).atMidnight();}
 	function yyyymm(d) {return d.getFullYear() * 100 + d.getMonth();}
 
