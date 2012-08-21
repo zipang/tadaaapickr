@@ -110,7 +110,7 @@
 
 	function parseDate(str, fmt) {
 
-		if (!str) return null;
+		if (!str) return undefined;
 
 		var format  = (typeof(fmt) == "string") ? parseFormat(fmt) : fmt,
 			matches = str.match(/[0-9]+/g); // only number parts interest us..
