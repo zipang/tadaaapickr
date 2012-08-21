@@ -25,10 +25,19 @@
 				locale: "ja"
 			});
 
+			var today = new Date();
 			$("#cmdToday").click(function() {
-				$("input.date.today").datepicker("setDate", new Date());
+				$("input.date.today").datepicker("setDate", today);
 			});
-		});
+
+			var thisYearStartsAt = new Date(today.getFullYear(), 0, 1),
+				andEndsAt = new Date(today.getFullYear() + 1, 0, 0);
+
+			$("input.date.constrained")
+				.datepicker("setStartDate", thisYearStartsAt)
+				.datepicker("setEndDate", andEndsAt);
+
+		})
 	</script>
 </head>
 
@@ -43,11 +52,11 @@
 
 	<form class="well">
 		<h2>Once upon a time</h2>
-		<label>When was the last time you heard about it ? <input type="text" class="date today" size="10"/></label>
+		<label>When was the last time you heard about it ? <input type="text" class="date today constrained" size="10"/><br/>(this year only)</label>
 		<label>Tell us more about it : <input type="text"/></label>
 
 		<h2>Long long ago..</h2>
-		<label>Do you remember when ? <input type="text" class="date today" size="10" /></label>
+		<label>Do you remember when ? <input type="text" class="date" size="10" /></label>
 
 		<h2>In a faraway galaxy..</h2>
 		<label>That's when i was born : <input type="text" class="date" size="10" /></label>
@@ -60,7 +69,7 @@
 
 		<form class="well">
 			<h2>Il était une fois</h2>
-			<label>Entrez une date ici : <input type="text" class="date today" size="10"/></label>
+			<label>Quand avez-vous entendu parler de nous : <input type="text" class="date today constrained" size="10"/><br/>(Cette année uniquement)</label>
 			<label>Dites nous en plus : <input type="text"/></label>
 
 
@@ -79,7 +88,7 @@
 
 		<form class="well">
 			<h2>むかーし、昔</h2>
-			<label>Entrez une date ici : <input type="text" class="date today" size="10"/></label>
+			<label>Quand avez-vous entendu parler de nous : <input type="text" class="date today constrained" size="10"/><br/>(Cette année uniquement)</label>
 			<label>Dites nous en plus : <input type="text"/></label>
 
 
