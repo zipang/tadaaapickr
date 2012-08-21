@@ -125,8 +125,8 @@ The second -more traditional- way, is to access the Calendar object defined on a
 
 <note>Note that in both cases, methods expecting date parameters can be passed as arguments a real Date object, or a String representing a date in the date picker's declared format. </note>
 
-Acknowlegements
----------------
+Acknowledgements
+----------------
 
 This plugin would not have been made without the precedent awesome work of :
 
