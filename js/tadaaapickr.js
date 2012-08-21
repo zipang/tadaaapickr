@@ -103,7 +103,7 @@
 			}
 
 			var targetPos = $target.offset(),
-				inputDate = Date.parse($target.val(), this.parsedFormat);
+				inputDate = this._parse($target.val());
 
 			this.setDate(inputDate)
 				.refreshDays() // coming from another input needs us to refresh the day headers
@@ -192,7 +192,7 @@
 			if (!fantomMove && !this.selectedDate) offset = 0;
 
 			var newDate = Date.add((fantomMove ? this.displayedDate : this.selectedDate || this.defaultDate), offset, unit),
-				$cal = this.$cal, $days = $cal.data("$days");
+				$days = this.$cal.data("$days");
 
 			if (newDate < this.startDate || newDate > this.endDate) return;
 
@@ -207,8 +207,7 @@
 			} else {
 				// we stay in the same month display : just refresh the 'active' cell
 				$($days[this.selectedIndex]).removeClass("active");
-				this.selectedIndex += offset;
-				$($days[this.selectedIndex]).addClass("active");
+				$days[this.selectedIndex += offset].className += " active";
 				this.setDate(newDate);
 			}
 
@@ -326,16 +325,19 @@
 
 			if (!this.dirty) return;
 
-			var $target = this.$target,
-				newDate = Date.parse($target.val(), this.parsedFormat);
+			var $target = this.$target, newDate = this._parse($target.val());
 
 			if (!newDate) { // invalid or empty input
 				// restore the precedent value or erase the bad input
 				this.setDate(this.required ? this.selectedDate || this.defaultDate : null);
 
-			} else if (newDate - this.selectedDate) {
-				this.setDate(newDate);
-				this.$target.trigger({type: "dateChange", date: this.selectedDate});
+			} else if (newDate - this.selectedDate) { // date has changed
+				if (newDate < this.startDate || newDate > this.endDate) { // forbidden range
+					this.setDate(this.selectedDate); //restore previous value
+				} else { // ok
+					this.setDate(newDate);
+					$target.trigger({type: "dateChange", date: this.selectedDate});
+				}
 			}
 
 			this.hide();
@@ -378,10 +380,8 @@
 		$cal.on("click", "td.day", function(e) {
 			nope(e); // IMPORTANT: prevent the input to loose focus!
 
-			var cal = $cal.data("calendar");
-			if (!cal) return;
-
-			var $day = $(this), day = +$day.text(),
+			var cal = $cal.data("calendar"),
+				$day = $(this), day = +$day.text(),
 				firstDayOfMonth = cal.displayedDate,
 				monthOffset = ($day.hasClass("old") ? -1 : ($day.hasClass("new") ? +1 : 0)),
 				newDate = new Date(firstDayOfMonth.getFullYear(), firstDayOfMonth.getMonth() + monthOffset, day);
@@ -389,12 +389,10 @@
 			if (newDate < cal.startDate || newDate > cal.endDate) return;
 
 			// Update the $input control
-			cal.setDate(newDate).select().refresh();
-			// let a short moment happen to hide our calendar (so that the focus event can happen in IE)
+			cal.setDate(newDate).select().hide();
 
 			// Send the event asynchronously
 			setTimeout(function() {
-				cal.hide();
 				cal.$target.trigger({type: "dateChange", date: newDate});
 			}, 0);
 
@@ -404,7 +402,6 @@
 			nope(e); // IMPORTANT: prevent the input to loose focus!
 
 			var cal = $cal.data("calendar");
-			if (!cal) return;
 
 			if ($(this).hasClass("prev")) {
 				cal.navigate(-1, "month", true);
@@ -435,8 +432,7 @@
 	 * @return {*}
 	 */
 	Calendar.getLocale = function(loc) {
-		var locales = Calendar.locales;
-		return (locales[loc] || locales["en"]);
+		return (Calendar.locales[loc] || Calendar.locales["en"]);
 	};
 
 	/**
@@ -449,7 +445,6 @@
 
 	/**
 	 * Hide any instance of any active calendar widget (they should be only one)
-	 * and clear the highlight class
 	 * Usage calls may be :
 	 * Calendar.hide() Hide every active calendar instance
 	 * Calendar.hide(evt) (as in document.click)
@@ -457,9 +452,7 @@
 	 */
 	Calendar.hide = function($cal) {
 		var $target = ((!$cal || $cal.originalEvent) ? $(".datepicker.active") : $cal);
-		$target
-			.removeClass("active").removeAttr("style")
-			.find("td").removeClass("active old new");
+		$target.removeClass("active").removeAttr("style");
 	};
 
 	// Every other clicks must hide the calendars
@@ -471,8 +464,8 @@
 		if (!arg || typeof(arg) === "object") { // initial call to create the calendar
 
 			return $(this).each(function(i, target) {
-				var options = $.extend({}, defaults,  arg);
-				var cal = new Calendar($(target), options);
+				var options = $.extend({}, defaults,  arg),
+					cal = new Calendar($(target), options);
 				$(target).data("datepicker", cal);
 			});
 
@@ -518,4 +511,3 @@
 	function repeat(str, n) {return (n == 0) ? "" : Array(n+1).join(str);}
 
 })(jQuery);
-
