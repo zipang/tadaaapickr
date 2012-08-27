@@ -6,7 +6,7 @@
 	<link rel="stylesheet" type="text/css" href="css/bootstrap-responsive.css">
 	<link rel="stylesheet" type="text/css" href="css/tadaaapickr.css">
 
-	<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="lib/jquery-1.7.2.min.js"></script>
 	<script type="text/javascript" src="js/tadaaapickr.js"></script>
 
 	<script type="text/javascript" src="js/CalendarTools.js"></script>
@@ -15,13 +15,13 @@
 
 	<script type="text/javascript">
 		$(function onload() {
-			$("article[lang='en'] input.date").datepicker();
-			$("article[lang='fr'] input.date").datepicker({
+			$("form.en input.date").datepicker();
+			$("form.fr input.date").datepicker({
 				language: "fr",
 				dateFormat: "dd/mm/yyyy",
 				firstDayOfWeek: 1
 			});
-			$("article[lang='ja'] input.date").datepicker({
+			$("form.ja input.date").datepicker({
 				locale: "ja"
 			});
 
@@ -50,7 +50,7 @@
 
 	<article id="englishTest" class="container span5" lang="en">
 
-	<form class="well">
+	<form class="en well">
 		<h2>Once upon a time</h2>
 		<label>When was the last time you heard about it ? <input type="text" class="date today constrained" size="10"/><br/>(this year only)</label>
 		<label>Tell us more about it : <input type="text"/></label>
@@ -67,7 +67,7 @@
 
 	<article id="frenchTest" class="container span5" lang="fr">
 
-		<form class="well">
+		<form class="fr well">
 			<h2>Il était une fois</h2>
 			<label>Quand avez-vous entendu parler de nous : <input type="text" class="date today constrained" size="10"/><br/>(Cette année uniquement)</label>
 			<label>Dites nous en plus : <input type="text"/></label>
@@ -86,7 +86,7 @@
 
 	<article id="japaneseTest" class="container span5" lang="ja">
 
-		<form class="well">
+		<form class="ja well">
 			<h2>むかーし、昔</h2>
 			<label>Quand avez-vous entendu parler de nous : <input type="text" class="date today constrained" size="10"/><br/>(Cette année uniquement)</label>
 			<label>Dites nous en plus : <input type="text"/></label>
