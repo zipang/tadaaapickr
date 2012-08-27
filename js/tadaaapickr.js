@@ -194,7 +194,7 @@
 			var newDate = Date.add((fantomMove ? this.displayedDate : this.selectedDate || this.defaultDate), offset, unit),
 				$days = this.$cal.data("$days");
 
-			if (newDate < this.startDate || newDate > this.endDate) return;
+			if (newDate < this.startDate || newDate > this.endDate) return this.select();
 
 			if (yyyymm(newDate) != yyyymm(this.displayedDate) || !this.selectedIndex) {
 				if (fantomMove) {
@@ -300,6 +300,9 @@
 				case 13: // ENTER
 					// Send the 'Date change' event
 					this.$target.trigger({type: "dateChange", date: this.selectedDate});
+					return this.hide();
+
+				case 27: // ESC
 					return this.hide();
 			}
 
