@@ -54,8 +54,8 @@ Pass some options like this :
 
 ### i18n settings
 
-Several options are available to fully customize the way the calendar is displayed and to adapt it to any it usable in any language. 
-The `language` code defines the translations of the month and day names.
+Several options are available to fully customize the way the calendar is displayed and to adapt it to any local usage. 
+The `language` code defines the translations of the month and day names. Other options control the first day of the week and the date format.
 
 <table>
   <tr><th>Option</th><th>Type</th><th>Description</th><th>Default</th></tr>
