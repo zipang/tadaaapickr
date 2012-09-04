@@ -16,6 +16,7 @@ A lightweight, accessible jQuery DatePicker, styled with Bootstrap.. Tadaaa !!
 - Full extensible internationalization support
 - Lightweight markup. By default, only _one_ calendar is used on a whole page even with different locales.
 - Super fast and responsive, even under IE6/7
+- Programmable API
 
 
 Installation / Usage
@@ -23,12 +24,12 @@ Installation / Usage
 
 ### Basics
 
-Extract the js and css folders from the archive.
+Extract the tadaaapickr folder into your project folder. The `css/` and `dist/` subdirectories contain the files you must include.
 
-Then add references to the stylesheet and javascript files in your page:
+Add the references to the stylesheet and to the packed minified version in your page:
 
     <link href="css/tadaaapickr.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="js/tadaaapickr.js"></script>
+    <script  src="dist/tadaaapickr.pack.min.js" type="text/javascript"></script>
 
 
 Create one ore more text input to tie the plugin to:
@@ -40,22 +41,21 @@ Create one ore more text input to tie the plugin to:
 Finally bind the plugin to the input textbox like this:
 
 ```javascript
-	$("#txtDate").datepicker();
+    $("#txtDate").datepicker();
 ```
 
-Pass some options like this :
+or like that, if you want to pass some options :
 
 ```javascript
-	$("input.date.french").datepicker({
-		dateFormat: "dd/mm/yyyy",
-		language: "fr"
-	});
+    $("input.date.french").datepicker({
+        dateFormat: "dd/mm/yyyy",
+        language: "fr"
+    });
 ```
 
-### i18n settings
+### Internationalization
 
-Several options are available to fully customize the way the calendar is displayed and to adapt it to any local usage. 
-The `language` code defines the translations of the month and day names. Other options control the first day of the week and the date format.
+Several options are related to the internationalization of the dates, `language` being the most obvious one because it defines the way both months and days will be displayed.
 
 <table>
   <tr><th>Option</th><th>Type</th><th>Description</th><th>Default</th></tr>
@@ -64,29 +64,29 @@ The `language` code defines the translations of the month and day names. Other o
   <tr><td><code>firstDayOfWeek</code></td><td><code>Number</code></td><td>Number between 0 and 6 to define the first day of the week. </td><td>(default 0 : Sunday)</td></tr>
 </table>
 
-These options can be set individually, but as we know, they are usually related. In France for example, we usually speak french, we have a date format where the days come first (which seems more logical in fact) and, like in the Bible, the first day in our weeks is Monday.
+These options can be set individually, but as we know, they are usually related. In France for example, we usually speak french, we have a date format where the days come first (which seems more logical in fact) and, like in the Bible, the first day of our week is Monday.
 
-Hopefully, the internationalization files bundled with tadaaapickr come with some defaults settings for these 3 attributes and the way to access these default settings is to specify the `locale` setting.
+Hopefully, the internationalization files bundled with tadaaapickr come with some defaults settings for these 3 attributes and the way to access these default settings is to use the `locale` option.
 
 So that the following call :
 
 ```javascript
-	$("input.date.french").datepicker({
-		dateFormat: "dd/mm/yyyy",
-		firstDayOfWeek: 1,
-		language: "fr"
-	});
+    $("input.date.french").datepicker({
+        dateFormat: "dd/mm/yyyy",
+        firstDayOfWeek: 1,
+        language: "fr"
+    });
 ```
 
-can be made shorter by specifying only the french `locale` :
+is equivalent to specifying only the `locale` option :
 
 ```javascript
-	$("input.date.french").datepicker({
-		locale: "fr"
-	});
+    $("input.date.french").datepicker({
+        locale: "fr"
+    });
 ```
 
-If all your date pickers have the same locale settings (there is a great chance for that in fact) then, you can set _once and for all_ the default locale and forget about it in the subsequent calls.
+If all your date pickers have the same locale settings (there is a great chance for that in fact) then, you can set it once and for all and forget about it in the subsequent calls.
 This gives us the third equivalent formulation of the 2 precedent examples :
 
 ```javascript
@@ -95,13 +95,30 @@ This gives us the third equivalent formulation of the 2 precedent examples :
 	$("#startDate").datepicker({startDate: '01/01/2000'}); // will also get the french locale
 ```
 
-### Programmable API : Date picker control
+### Date picker events
 
-The calendar plugin has many built-in features that you can access as you wish, even after that it has been created.
+Only one event is generated so far to take effect on user's interaction.
+This event is the dateChanged
+
+This is how you register an event handler with the new jQuery 1.7 `.on()` syntax.
+
+```javascript
+	$("#myPicker")
+		.datepicker(); // initialize a date picker
+		.on("dateChange", function(e) {
+			var newDate = e.date;
+			console.log("Date changed on myPicker : " + newDate);
+		});
+```
+	Note : tadaaapickr is effectively dependant on jQuery 1.7
+
+### Date picker API
+
+The tadaaapicker calendar plugin exposes a set of public methods usefull to control it programmatically and integrate it inside another component.
 
 For example, if you want to change the current date, or change any predefined options, you can do it programmatically in two ways :
 
-The first way is to use the same jQuery selector syntax to access the same input elements that had been initialiazed as date pickers, and to send them new commands that can be chained the jQuery way :
+The first way is to use the jQuery selector syntax to access some input elements that have allready been initialiazed as date pickers, and to send them new commands that can be chained the jQuery way :
 
 ```javascript
 	// Narrow our date picker to events that occured during the French Revolution
@@ -124,19 +141,19 @@ The second -more traditional- way, is to access the Calendar object defined on a
 		.setEndDate(new Date(1981, 6, 20))
 ```
 
-<note>Note that in both cases, methods expecting date parameters can be passed as arguments a real Date object, or a String representing a date in the date picker's declared format. </note>
+<note>Note that in both cases, methods expecting _date_ parameters can be passed real Date objects, or String representing a date in the date picker's declared format. </note>
 
 Acknowledgements
------------------------
+----------------
 
 This plugin would not have been made without the precedent awesome work of :
 
-* [Stefan Petre](http://www.eyecon.ro) and [Andrew Rowls](https://github.com/eternicode) who started the first versions ^[1] ^[2] of a date picker styled with Bootstrap.
+* [Stefan Petre](http://www.eyecon.ro) and [Andrew Rowls](https://github.com/eternicode) who started the first versions [^1] [^2] of a date picker styled with Bootstrap.
 * [Gautam Lad](https://github.com/glad) for the way its glDatePicker methods can be called via the same jQuery syntax.
 * [John Resig](https://github.com/jeresig) because he gave us jQuery, and we forgot about Prototype..
 
-[1]: http://www.eyecon.ro/bootstrap-datepicker
-[2]: https://github.com/eternicode/bootstrap-datepicker
+[^1]: http://www.eyecon.ro/bootstrap-datepicker
+[^2]: https://github.com/eternicode/bootstrap-datepicker
 
 
 License
