@@ -1,0 +1,108 @@
+<html>
+<head>
+	<title>Calendar test</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="css/bootstrap-responsive.css">
+
+	<link rel="stylesheet" type="text/css" href="../css/tadaaapickr.css">
+
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.1.min.js"></script>
+	<script type="text/javascript" src="../dist/tadaaapickr.pack.min.js"></script>
+
+	<script type="text/javascript">
+		$(function onload() {
+			$("form.en input.date").datepicker();
+			$("form.fr input.date").datepicker({
+				language: "fr",
+				dateFormat: "dd/mm/yyyy",
+				firstDayOfWeek: 1
+			});
+			$("form.ja input.date").datepicker({
+				locale: "ja"
+			});
+
+			var today = new Date();
+			$("#cmdToday").click(function() {
+				$("input.date.today").datepicker("setDate", today);
+			});
+
+			var thisYearStartsAt = new Date(today.getFullYear(), 0, 1),
+				andEndsAt = new Date(today.getFullYear() + 1, 0, 0);
+
+			$("input.date.constrained")
+				.datepicker("setStartDate", thisYearStartsAt)
+				.datepicker("setEndDate", andEndsAt);
+
+		})
+	</script>
+</head>
+
+
+<body>
+
+	<h1>Tadaa Pickr Calendar Test</h1>
+
+	<hr/>
+
+	<article id="englishTest" class="container span5" lang="en">
+
+	<form class="en well">
+		<h2>Once upon a time</h2>
+		<label>When was the last time you heard about it ? <input type="text" class="date today constrained" size="10"/><br/>(this year only)</label>
+		<label>Tell us more about it : <input type="text"/></label>
+
+		<h2>Long long ago..</h2>
+		<label>Do you remember when ? <input type="text" class="date" size="10" /></label>
+
+		<h2>In a faraway galaxy..</h2>
+		<label>That's when i was born : <input type="text" class="date" size="10" /></label>
+
+	</form>
+
+	</article>
+
+	<article id="frenchTest" class="container span5" lang="fr">
+
+		<form class="fr well">
+			<h2>Il était une fois</h2>
+			<label>Quand avez-vous entendu parler de nous : <input type="text" class="date today constrained" size="10"/><br/>(Cette année uniquement)</label>
+			<label>Dites nous en plus : <input type="text"/></label>
+
+
+			<h2>Il y a bien longtemps..</h2>
+			<label>Et puis quoi encore : <input type="text" class="date" size="10" /></label>
+
+			<h2>Dans une galaxie très lointaine..</h2>
+			<label>C'est à ce moment que je suis né : <input type="text" class="date" size="10" /></label>
+
+		</form>
+
+	</article>
+
+
+	<article id="japaneseTest" class="container span5" lang="ja">
+
+		<form class="ja well">
+			<h2>むかーし、昔</h2>
+			<label>Quand avez-vous entendu parler de nous : <input type="text" class="date today constrained" size="10"/><br/>(Cette année uniquement)</label>
+			<label>Dites nous en plus : <input type="text"/></label>
+
+
+			<h2>ひとむかし前..</h2>
+			<label>Et puis quoi encore : <input type="text" class="date" size="10" /></label>
+
+			<h2>銀河系のはて..</h2>
+			<label>C'est à ce moment que je suis né : <input type="text" class="date" size="10" /></label>
+
+		</form>
+
+	</article>
+
+	<article id="" class="container span12">
+		Click on this button to reset all first date input to today's date :
+		<button id="cmdToday">Today is the day</button>
+	</article>
+
+</body>
+</html>
