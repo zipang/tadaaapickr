@@ -59,9 +59,9 @@ Several options are related to the internationalization of the dates, `language`
 
 <table>
   <tr><th>Option</th><th>Type</th><th>Description</th><th>Default</th></tr>
-  <tr><td><code>language</code></td><td><code>String</code></td><td>A 2 letters ISO 639-1 code defining the language to be used for day and months representation. </td><td>(default: 'en')</td></tr>
-  <tr><td><code>dateFormat</code></td><td><code>String</code></td><td>Defining the input format. d, dd, m, mm, yy, yyyy are the usual suspects to define the format parts. </td><td>(default: 'mm/dd/yyyy')</td></tr>
-  <tr><td><code>firstDayOfWeek</code></td><td><code>Number</code></td><td>Number between 0 and 6 to define the first day of the week. </td><td>(default 0 : Sunday)</td></tr>
+  <tr><td><code>language</code></td><td><code>String</code></td><td>A 2 letters ISO 639-1 code defining the language to be used for day and months representation. </td><td>`en` (english)</td></tr>
+  <tr><td><code>dateFormat</code></td><td><code>String</code></td><td>Defining the input format. d, dd, m, mm, yy, yyyy are the usual suspects to define the format parts. </td><td>`mm/dd/yyyy`</td></tr>
+  <tr><td><code>firstDayOfWeek</code></td><td><code>Number</code></td><td>Number between 0 and 6 to define the first day of the week. </td><td>`0` (Sunday)</td></tr>
 </table>
 
 These options can be set individually, but as we know, they are usually related. In France for example, we usually speak french, we have a date format where the days come first (which seems more logical in fact) and, like in the Bible, the first day of our week is Monday.
@@ -98,7 +98,8 @@ This gives us the third equivalent formulation of the 2 precedent examples :
 ### Date picker events
 
 Only one event is generated so far to take effect on user's interaction.
-This event is the dateChanged
+
+This event is `dateChange` and it occurs when the user click on a new date in the calendar, when he presses ENTER or TAB when on a new date. The event is not fired when the user moves inside the calendar with the arrows keys.
 
 This is how you register an event handler with the new jQuery 1.7 `.on()` syntax.
 
@@ -133,9 +134,9 @@ This allows to send commands to multiple items at the same time.
 The second -more traditional- way, is to access the Calendar object defined on any initialized datepicker that way :
 
 ```javascript
-	// Narrow our date picker to events during the French Revolution
+	// Get the underlying Calendar object bound to each input
 	var frenchCalendar = $("input#frenchRevolutionEvents").data("calendar");
-	frenchCalendar
+	frenchCalendar // Narrow our date picker to events during the French Revolution
 		.setStartDate(new Date(1789, 5, 5))
 		.setDate(new Date(1989, 7, 14));
 		.setEndDate(new Date(1981, 6, 20))
