@@ -4,7 +4,7 @@ tadaaapickr
 A lightweight, accessible jQuery DatePicker, styled with Bootstrap.. Tadaaa !!
 
 * View the project page : http://zipang.github.com/tadaaapickr
-* Try the demos : http://zipang.github.com/tadaaapickr/testpage.html
+* Try the demos : http://zipang.github.com/tadaaapickr/examples/testpage.html
 * Fork it on github : http://github.com/zipang/tadaaapickr
 
 ### Features
@@ -53,15 +53,17 @@ or like that, if you want to pass some options :
     });
 ```
 
-### Internationalization
+### Internationalization (i18n settings)
 
 Several options are related to the internationalization of the dates, `language` being the most obvious one because it defines the way both months and days will be displayed.
 
 <table>
-  <tr><th>Option</th><th>Type</th><th>Description</th><th>Default</th></tr>
-  <tr><td><code>language</code></td><td><code>String</code></td><td>A 2 letters ISO 639-1 code defining the language to be used for day and months representation. </td><td>(default: 'en')</td></tr>
-  <tr><td><code>dateFormat</code></td><td><code>String</code></td><td>Defining the input format. d, dd, m, mm, yy, yyyy are the usual suspects to define the format parts. </td><td>(default: 'mm/dd/yyyy')</td></tr>
-  <tr><td><code>firstDayOfWeek</code></td><td><code>Number</code></td><td>Number between 0 and 6 to define the first day of the week. </td><td>(default 0 : Sunday)</td></tr>
+	<thead><tr><th>Option</th><th>Type</th><th>Description</th><th>Default</th></tr></thead>
+	<tbody>
+		<tr><td><code>language</code></td><td><code>String</code></td><td>A 2 letters ISO 639-1 code defining the language to be used for day and months representation. </td><td><code>en</code> (english)</td></tr>
+		<tr><td><code>dateFormat</code></td><td><code>String</code></td><td>Defining the input format. d, dd, m, mm, yy, yyyy are the usual suspects to define the format parts. </td><td><code>mm/dd/yyyy</code></td></tr>
+		<tr><td><code>firstDayOfWeek</code></td><td><code>Number</code></td><td>Number between 0 and 6 to define the first day of the week. </td><td><code>0</code> (Sunday)</td></tr>
+	</tbody>
 </table>
 
 These options can be set individually, but as we know, they are usually related. In France for example, we usually speak french, we have a date format where the days come first (which seems more logical in fact) and, like in the Bible, the first day of our week is Monday.
@@ -98,7 +100,8 @@ This gives us the third equivalent formulation of the 2 precedent examples :
 ### Date picker events
 
 Only one event is generated so far to take effect on user's interaction.
-This event is the dateChanged
+
+This event is `dateChange` and it occurs when the user click on a new date in the calendar, when he presses ENTER or TAB when on a new date. The event is not fired when the user moves inside the calendar with the arrows keys.
 
 This is how you register an event handler with the new jQuery 1.7 `.on()` syntax.
 
@@ -133,27 +136,38 @@ This allows to send commands to multiple items at the same time.
 The second -more traditional- way, is to access the Calendar object defined on any initialized datepicker that way :
 
 ```javascript
-	// Narrow our date picker to events during the French Revolution
+	// Get the underlying Calendar object bound to each input
 	var frenchCalendar = $("input#frenchRevolutionEvents").data("calendar");
-	frenchCalendar
+	frenchCalendar // Narrow our date picker to events during the French Revolution
 		.setStartDate(new Date(1789, 5, 5))
 		.setDate(new Date(1989, 7, 14));
 		.setEndDate(new Date(1981, 6, 20))
 ```
 
-<note>Note that in both cases, methods expecting _date_ parameters can be passed real Date objects, or String representing a date in the date picker's declared format. </note>
+> Note that in both invocation modes, methods expecting _date_ parameters can be passed real Date objects _or_ a String representing the date in the datepicker's declared format.
+
+<table>
+	<thead><tr><th>Method name</th><th>Description</th></tr></thead>
+	<tbody>
+		<tr><td><code>setDate(Date)</code></td><td>Set a new date as the current datepicker's value. The date will be displayed in the datepicker's format. The event dateChange will be triggered to any event handler.</td></tr>
+		<tr><td><code>setStartDate(Date)</code></td><td>Specify the first available date for selection in the datepicker's calendar.Date manually input before this limit will be ignored.</td></tr>
+		<tr><td><code>setEndDate(Date)</code></td><td>Specify the last available date for selection in the datepicker's calendar. Date manually input beyond this limit will be ignored.</td></tr>
+	</tbody>
+</table>
+
+
 
 Acknowledgements
 ----------------
 
 This plugin would not have been made without the precedent awesome work of :
 
-* [Stefan Petre](http://www.eyecon.ro) and [Andrew Rowls](https://github.com/eternicode) who started the first versions [^1] [^2] of a date picker styled with Bootstrap.
+* [Stefan Petre](http://www.eyecon.ro) and [Andrew Rowls](https://github.com/eternicode) who started the first versions <sup>[1], [2]</sup> of a date picker styled with Bootstrap.
 * [Gautam Lad](https://github.com/glad) for the way its glDatePicker methods can be called via the same jQuery syntax.
 * [John Resig](https://github.com/jeresig) because he gave us jQuery, and we forgot about Prototype..
 
-[^1]: http://www.eyecon.ro/bootstrap-datepicker
-[^2]: https://github.com/eternicode/bootstrap-datepicker
+[1]: http://www.eyecon.ro/bootstrap-datepicker
+[2]: https://github.com/eternicode/bootstrap-datepicker
 
 
 License
