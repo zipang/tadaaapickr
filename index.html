@@ -1,0 +1,266 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Tadaaapickr by zipang</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/main.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+
+      <header>
+        <h1>Tadaaapickr</h1>
+        <p>A jQuery DatePicker, styled with Bootstrap.. Tadaaa !!</p>
+      </header>
+
+      <div id="banner">
+        <span id="logo"></span>
+
+        <a href="https://github.com/zipang/tadaaapickr" class="button fork"><strong>View On GitHub</strong></a>
+        <div class="downloads">
+          <span>Downloads:</span>
+          <ul>
+            <li><a href="https://github.com/zipang/tadaaapickr/zipball/master" class="button">ZIP</a></li>
+            <li><a href="https://github.com/zipang/tadaaapickr/tarball/master" class="button">TAR</a></li>
+          </ul>
+        </div>
+      </div><!-- end banner -->
+
+    <div class="wrapper">
+      <nav>
+        <ul></ul>
+      </nav>
+      <section>
+        <h1>tadaaapickr</h1>
+
+<p>A lightweight, accessible jQuery DatePicker, styled with Bootstrap.. Tadaaa !!</p>
+
+<ul>
+<li>View the project page : <a href="http://zipang.github.com/tadaaapickr">http://zipang.github.com/tadaaapickr</a>
+</li>
+<li>Try the demos : <a href="http://zipang.github.com/tadaaapickr/examples/testpage.html">http://zipang.github.com/tadaaapickr/examples/testpage.html</a>
+</li>
+<li>Fork it on github : <a href="http://github.com/zipang/tadaaapickr">http://github.com/zipang/tadaaapickr</a>
+</li>
+</ul><h3>Features</h3>
+
+<ul>
+<li>Full keyboard navigation
+
+<ul>
+<li>Arrows keys navigate inside the calendar space</li>
+<li>CTRL+arrows keys navigate in the months/years space</li>
+<li>ESC key restore the native input value</li>
+</ul>
+</li>
+<li>Full extensible internationalization support</li>
+<li>Lightweight markup. By default, only <em>one</em> calendar is used on a whole page even with different locales.</li>
+<li>Super fast and responsive, even under IE6/7</li>
+<li>Programmable API</li>
+</ul><h2>Installation / Usage</h2>
+
+<h3>Basics</h3>
+
+<p>Extract the tadaaapickr folder into your project folder. The <code>css/</code> and <code>dist/</code> subdirectories contain the files you must include.</p>
+
+<p>Add the references to the stylesheet and to the packed minified version in your page:</p>
+
+<pre><code>&lt;link href="css/tadaaapickr.css" rel="stylesheet" type="text/css" /&gt;
+&lt;script  src="dist/tadaaapickr.pack.min.js" type="text/javascript"&gt;&lt;/script&gt;
+</code></pre>
+
+<p>Create one ore more text input to tie the plugin to:</p>
+
+<pre><code>&lt;input type="text" id="txtDate" /&gt;
+&lt;input type="text" class="date french" id="txtFrenchDate" /&gt;
+</code></pre>
+
+<p>Finally bind the plugin to the input textbox like this:</p>
+
+<div class="highlight"><pre>    <span class="nx">$</span><span class="p">(</span><span class="s2">"#txtDate"</span><span class="p">).</span><span class="nx">datepicker</span><span class="p">();</span>
+</pre></div>
+
+<p>or like that, if you want to pass some options :</p>
+
+<div class="highlight"><pre>    <span class="nx">$</span><span class="p">(</span><span class="s2">"input.date.french"</span><span class="p">).</span><span class="nx">datepicker</span><span class="p">({</span>
+        <span class="nx">dateFormat</span><span class="o">:</span> <span class="s2">"dd/mm/yyyy"</span><span class="p">,</span>
+        <span class="nx">language</span><span class="o">:</span> <span class="s2">"fr"</span>
+    <span class="p">});</span>
+</pre></div>
+
+<h3>Internationalization (i18n settings)</h3>
+
+<p>Several options are related to the internationalization of the dates, <code>language</code> being the most obvious one because it defines the way both months and days will be displayed.</p>
+
+<table>
+<tr>
+<th>Option</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+<tr>
+<td><code>language</code></td>
+<td><code>String</code></td>
+<td>A 2 letters ISO 639-1 code defining the language to be used for day and months representation. </td>
+<td>
+<code>en</code> (english)</td>
+</tr>
+<tr>
+<td><code>dateFormat</code></td>
+<td><code>String</code></td>
+<td>Defining the input format. d, dd, m, mm, yy, yyyy are the usual suspects to define the format parts. </td>
+<td><code>mm/dd/yyyy</code></td>
+</tr>
+<tr>
+<td><code>firstDayOfWeek</code></td>
+<td><code>Number</code></td>
+<td>Number between 0 and 6 to define the first day of the week. </td>
+<td>
+<code>0</code> (Sunday)</td>
+</tr>
+</table><p>These options can be set individually, but as we know, they are usually related. In France for example, we usually speak french, we have a date format where the days come first (which seems more logical in fact) and, like in the Bible, the first day of our week is Monday.</p>
+
+<p>Hopefully, the internationalization files bundled with tadaaapickr come with some defaults settings for these 3 attributes and the way to access these default settings is to use the <code>locale</code> option.</p>
+
+<p>So that the following call :</p>
+
+<div class="highlight"><pre>    <span class="nx">$</span><span class="p">(</span><span class="s2">"input.date.french"</span><span class="p">).</span><span class="nx">datepicker</span><span class="p">({</span>
+        <span class="nx">dateFormat</span><span class="o">:</span> <span class="s2">"dd/mm/yyyy"</span><span class="p">,</span>
+        <span class="nx">firstDayOfWeek</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="nx">language</span><span class="o">:</span> <span class="s2">"fr"</span>
+    <span class="p">});</span>
+</pre></div>
+
+<p>is equivalent to specifying only the <code>locale</code> option :</p>
+
+<div class="highlight"><pre>    <span class="nx">$</span><span class="p">(</span><span class="s2">"input.date.french"</span><span class="p">).</span><span class="nx">datepicker</span><span class="p">({</span>
+        <span class="nx">locale</span><span class="o">:</span> <span class="s2">"fr"</span>
+    <span class="p">});</span>
+</pre></div>
+
+<p>If all your date pickers have the same locale settings (there is a great chance for that in fact) then, you can set it once and for all and forget about it in the subsequent calls.
+This gives us the third equivalent formulation of the 2 precedent examples :</p>
+
+<div class="highlight"><pre>    <span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">datepicker</span><span class="p">.</span><span class="nx">Calendar</span><span class="p">.</span><span class="nx">setDefaultLocale</span><span class="p">(</span><span class="s2">"fr"</span><span class="p">);</span>
+    <span class="nx">$</span><span class="p">(</span><span class="s2">"input.date.french"</span><span class="p">).</span><span class="nx">datepicker</span><span class="p">();</span>
+    <span class="nx">$</span><span class="p">(</span><span class="s2">"#startDate"</span><span class="p">).</span><span class="nx">datepicker</span><span class="p">({</span><span class="nx">startDate</span><span class="o">:</span> <span class="s1">'01/01/2000'</span><span class="p">});</span> <span class="c1">// will also get the french locale</span>
+</pre></div>
+
+<h3>Date picker events</h3>
+
+<p>Only one event is generated so far to take effect on user's interaction.</p>
+
+<p>This event is <code>dateChange</code> and it occurs when the user click on a new date in the calendar, when he presses ENTER or TAB when on a new date. The event is not fired when the user moves inside the calendar with the arrows keys.</p>
+
+<p>This is how you register an event handler with the new jQuery 1.7 <code>.on()</code> syntax.</p>
+
+<div class="highlight"><pre>    <span class="nx">$</span><span class="p">(</span><span class="s2">"#myPicker"</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">datepicker</span><span class="p">();</span> <span class="c1">// initialize a date picker</span>
+        <span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">"dateChange"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">newDate</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">date</span><span class="p">;</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"Date changed on myPicker : "</span> <span class="o">+</span> <span class="nx">newDate</span><span class="p">);</span>
+        <span class="p">});</span>
+</pre></div>
+
+<pre><code>Note : tadaaapickr is effectively dependant on jQuery 1.7
+</code></pre>
+
+<h3>Date picker API</h3>
+
+<p>The tadaaapicker calendar plugin exposes a set of public methods usefull to control it programmatically and integrate it inside another component.</p>
+
+<p>For example, if you want to change the current date, or change any predefined options, you can do it programmatically in two ways :</p>
+
+<p>The first way is to use the jQuery selector syntax to access some input elements that have allready been initialiazed as date pickers, and to send them new commands that can be chained the jQuery way :</p>
+
+<div class="highlight"><pre>    <span class="c1">// Narrow our date picker to events that occured during the French Revolution</span>
+    <span class="nx">$</span><span class="p">(</span><span class="s2">"input#frenchRevolutionEvents"</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">datepicker</span><span class="p">(</span><span class="s2">"setStartDate"</span><span class="p">,</span> <span class="s2">"05/05/1789"</span><span class="p">)</span>   <span class="c1">// Estates-General of 1789</span>
+        <span class="p">.</span><span class="nx">datepicker</span><span class="p">(</span><span class="s2">"setDate"</span><span class="p">,</span> <span class="s2">"14/07/1789"</span><span class="p">)</span>        <span class="c1">// Storming of the Bastille</span>
+        <span class="p">.</span><span class="nx">datepicker</span><span class="p">(</span><span class="s2">"setEndDate"</span><span class="p">,</span> <span class="s2">"20/06/1791"</span><span class="p">);</span>    <span class="c1">// Flight to Varennes</span>
+</pre></div>
+
+<p>This allows to send commands to multiple items at the same time.</p>
+
+<p>The second -more traditional- way, is to access the Calendar object defined on any initialized datepicker that way :</p>
+
+<div class="highlight"><pre>    <span class="c1">// Get the underlying Calendar object bound to each input</span>
+    <span class="kd">var</span> <span class="nx">frenchCalendar</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">"input#frenchRevolutionEvents"</span><span class="p">).</span><span class="nx">data</span><span class="p">(</span><span class="s2">"calendar"</span><span class="p">);</span>
+    <span class="nx">frenchCalendar</span> <span class="c1">// Narrow our date picker to events during the French Revolution</span>
+        <span class="p">.</span><span class="nx">setStartDate</span><span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="mi">1789</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+        <span class="p">.</span><span class="nx">setDate</span><span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="mi">1989</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">14</span><span class="p">));</span>
+        <span class="p">.</span><span class="nx">setEndDate</span><span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="mi">1981</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+</pre></div>
+
+<blockquote>
+<p>Note that in both invocation modes, methods expecting <em>date</em> parameters can be passed real Date objects <em>or</em> a String representing the date in the datepicker's declared format.</p>
+</blockquote>
+
+<table>
+<tr>
+<th>Method name</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><code>setDate(Date)</code></td>
+<td>Set a new date as the current datepicker's value. The date will be displayed in the datepicker's format. The event dateChange will be triggered to any event handler.</td>
+</tr>
+<tr>
+<td><code>setStartDate(Date)</code></td>
+<td>Specify the first available date for selection in the datepicker's calendar.Date manually input before this limit will be ignored.</td>
+</tr>
+<tr>
+<td><code>setEndDate(Date)</code></td>
+<td>Specify the last available date for selection in the datepicker's calendar. Date manually input beyond this limit will be ignored.</td>
+</tr>
+</table><h2>Acknowledgements</h2>
+
+<p>This plugin would not have been made without the precedent awesome work of :</p>
+
+<ul>
+<li>
+<a href="http://www.eyecon.ro">Stefan Petre</a> and <a href="https://github.com/eternicode">Andrew Rowls</a> who started the first versions <sup><a href="http://www.eyecon.ro/bootstrap-datepicker">1</a>, <a href="https://github.com/eternicode/bootstrap-datepicker">2</a></sup> of a date picker styled with Bootstrap.</li>
+<li>
+<a href="https://github.com/glad">Gautam Lad</a> for the way its glDatePicker methods can be called via the same jQuery syntax.</li>
+<li>
+<a href="https://github.com/jeresig">John Resig</a> because he gave us jQuery, and we forgot about Prototype..</li>
+</ul><h2>License</h2>
+
+<p>Copyright (c) 2012 Christophe Desguez.  All rights reserved.</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.</p>
+      </section>
+      <footer>
+        <p>Project maintained by <a href="https://github.com/zipang">zipang</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
