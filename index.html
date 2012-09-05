@@ -1,36 +1,44 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-
   <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="Tadaaapickr : A jQuery DatePicker, styled with Bootstrap.. Tadaaa !!" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Tadaaapickr by zipang</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/main.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
-    <link rel="stylesheet" type="text/css" media="screen" href="site/stylesheets/stylesheet.css">
-
-    <title>Tadaaapickr</title>
   </head>
-
   <body>
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/zipang/tadaaapickr">View on GitHub</a>
+      <header>
+        <h1>Tadaaapickr</h1>
+        <p>A jQuery DatePicker, styled with Bootstrap.. Tadaaa !!</p>
+      </header>
 
-          <h1 id="project_title">Tadaaapickr</h1>
-          <h2 id="project_tagline">A jQuery DatePicker, styled with Bootstrap.. Tadaaa !!</h2>
+      <div id="banner">
+        <span id="logo"></span>
 
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/zipang/tadaaapickr/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/zipang/tadaaapickr/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
+        <a href="https://github.com/zipang/tadaaapickr" class="button fork"><strong>View On GitHub</strong></a>
+        <div class="downloads">
+          <span>Downloads:</span>
+          <ul>
+            <li><a href="https://github.com/zipang/tadaaapickr/zipball/master" class="button">ZIP</a></li>
+            <li><a href="https://github.com/zipang/tadaaapickr/tarball/master" class="button">TAR</a></li>
+          </ul>
+        </div>
+      </div><!-- end banner -->
 
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
+    <div class="wrapper">
+      <nav>
+        <ul></ul>
+      </nav>
+      <section>
         <h1>tadaaapickr</h1>
 
 <p>A lightweight, accessible jQuery DatePicker, styled with Bootstrap.. Tadaaa !!</p>
@@ -88,7 +96,7 @@
     <span class="p">});</span>
 </pre></div>
 
-<h3>Internationalization</h3>
+<h3>Internationalization (i18n settings)</h3>
 
 <p>Several options are related to the internationalization of the dates, <code>language</code> being the most obvious one because it defines the way both months and days will be displayed.</p>
 
@@ -103,19 +111,21 @@
 <td><code>language</code></td>
 <td><code>String</code></td>
 <td>A 2 letters ISO 639-1 code defining the language to be used for day and months representation. </td>
-<td>`en` (english)</td>
+<td>
+<code>en</code> (english)</td>
 </tr>
 <tr>
 <td><code>dateFormat</code></td>
 <td><code>String</code></td>
 <td>Defining the input format. d, dd, m, mm, yy, yyyy are the usual suspects to define the format parts. </td>
-<td>`mm/dd/yyyy`</td>
+<td><code>mm/dd/yyyy</code></td>
 </tr>
 <tr>
 <td><code>firstDayOfWeek</code></td>
 <td><code>Number</code></td>
 <td>Number between 0 and 6 to define the first day of the week. </td>
-<td>`0` (Sunday)</td>
+<td>
+<code>0</code> (Sunday)</td>
 </tr>
 </table><p>These options can be set individually, but as we know, they are usually related. In France for example, we usually speak french, we have a date format where the days come first (which seems more logical in fact) and, like in the Bible, the first day of our week is Monday.</p>
 
@@ -191,15 +201,34 @@ This gives us the third equivalent formulation of the 2 precedent examples :</p>
         <span class="p">.</span><span class="nx">setEndDate</span><span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="mi">1981</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
 </pre></div>
 
-<p>Note that in both cases, methods expecting <em>date</em> parameters can be passed real Date objects, or String representing a date in the date picker's declared format. </p>
+<blockquote>
+<p>Note that in both invocation modes, methods expecting <em>date</em> parameters can be passed real Date objects <em>or</em> a String representing the date in the datepicker's declared format.</p>
+</blockquote>
 
-<h2>Acknowledgements</h2>
+<table>
+<tr>
+<th>Method name</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><code>setDate(Date)</code></td>
+<td>Set a new date as the current datepicker's value. The date will be displayed in the datepicker's format. The event dateChange will be triggered to any event handler.</td>
+</tr>
+<tr>
+<td><code>setStartDate(Date)</code></td>
+<td>Specify the first available date for selection in the datepicker's calendar.Date manually input before this limit will be ignored.</td>
+</tr>
+<tr>
+<td><code>setEndDate(Date)</code></td>
+<td>Specify the last available date for selection in the datepicker's calendar. Date manually input beyond this limit will be ignored.</td>
+</tr>
+</table><h2>Acknowledgements</h2>
 
 <p>This plugin would not have been made without the precedent awesome work of :</p>
 
 <ul>
 <li>
-<a href="http://www.eyecon.ro">Stefan Petre</a> and <a href="https://github.com/eternicode">Andrew Rowls</a> who started the first versions <sup><a href="https://github.com/eternicode/bootstrap-datepicker">1</a></sup> of a date picker styled with Bootstrap.</li>
+<a href="http://www.eyecon.ro">Stefan Petre</a> and <a href="https://github.com/eternicode">Andrew Rowls</a> who started the first versions <sup><a href="http://www.eyecon.ro/bootstrap-datepicker">1</a>, <a href="https://github.com/eternicode/bootstrap-datepicker">2</a></sup> of a date picker styled with Bootstrap.</li>
 <li>
 <a href="https://github.com/glad">Gautam Lad</a> for the way its glDatePicker methods can be called via the same jQuery syntax.</li>
 <li>
@@ -226,17 +255,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.</p>
       </section>
-    </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Tadaaapickr maintained by <a href="https://github.com/zipang">zipang</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      <footer>
+        <p>Project maintained by <a href="https://github.com/zipang">zipang</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></small></p>
       </footer>
     </div>
-
-
-
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
   </body>
 </html>
