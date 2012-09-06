@@ -392,11 +392,12 @@
 			if (newDate < cal.startDate || newDate > cal.endDate) return;
 
 			// Update the $input control
-			cal.setDate(newDate).select().hide();
+			cal.setDate(newDate).select();
 
 			// Send the event asynchronously
 			setTimeout(function() {
 				cal.$target.trigger({type: "dateChange", date: newDate});
+				cal.hide();
 			}, 0);
 
 		});
