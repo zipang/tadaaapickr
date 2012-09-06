@@ -34,6 +34,12 @@
 				.datepicker("setStartDate", thisYearStartsAt)
 				.datepicker("setEndDate", andEndsAt);
 
+			$("input.date").on("dateChange", function(evt) {
+				if (evt.date.getDate() == 7 && evt.date.getMonth() == 8) {
+					alert("Happy Birthday Elric !! :)");
+				}
+			});
+
 		})
 	</script>
 </head>
