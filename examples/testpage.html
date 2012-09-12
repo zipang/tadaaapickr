@@ -1,0 +1,128 @@
+<html><head>
+	<title>Calendar test</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.css" >
+	<link rel="stylesheet" type="text/css" href="css/bootstrap-responsive.css" >
+	<link rel="stylesheet" type="text/css" href="../css/tadaaapickr.css" >
+
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.1.min.js"></script>
+	<script type="text/javascript" src="../js/tadaaapickr.js" ></script>
+	<script type="text/javascript" src="../js/CalendarTools.js" ></script>
+	<script type="text/javascript" src="../js/locales/dates.locales.fr.js" ></script>
+	<script type="text/javascript" src="../js/locales/dates.locales.ja.js" ></script>
+
+	<script type="text/javascript" >
+		$(function onload() {
+			$("form.en input.date").datepicker();
+			$("form.fr input.date").datepicker({
+				language: "fr",
+				dateFormat: "dd/mm/yyyy",
+				firstDayOfWeek: 1
+			});
+			$("form.ja input.date").datepicker({
+				locale: "ja"
+			});
+
+			var today = new Date();
+			$("#cmdToday").click(function() {
+				$("input.date.today").datepicker("setDate", today);
+			});
+
+			var thisYearStartsAt = new Date(today.getFullYear(), 0, 1),
+				andEndsAt = new Date(today.getFullYear() + 1, 0, 0);
+
+			$("input.date.constrained")
+				.datepicker("setStartDate", thisYearStartsAt)
+				.datepicker("setEndDate", andEndsAt);
+
+		})
+	</script>
+</head>
+
+
+<body style="" >
+
+	<h1>Tadaa Pickr Calendar Test</h1>
+
+	<hr/>
+
+    <article id="englishTest" class="container span5" lang="en">
+
+        <form class="en well">
+            <legend><h2>Once upon a time</h2></legend>
+            <div class="control-group">
+                <label>When was the first time you heard about us ?
+                    <input type="text"
+                         class="date today constrained"
+                         size="10"
+                         placeholder="<this year>"/>
+                </label>
+                <label>Tell us more about it : <input type="text"/></label>
+            </div>
+
+            <legend><h2>Long long ago..</h2></legend>
+            <div class="control-group">
+                <label class="control-label">Do you remember when ?
+                    <input type="text" class="date" size="10"/>
+                </label>
+            </div>
+
+            <legend><h2>In a faraway galaxy..</h2></legend>
+            <div class="control-group">
+                <label class="control-label">That's when i was born :
+                    <input type="text" class="date" size="10"/>
+                </label>
+            </div>
+
+        </form>
+
+    </article>
+
+	<article id="frenchTest" class="container span5" lang="fr" >
+
+		<form class="fr well" >
+			<legend><h2>Il était une fois</h2></legend>
+            <div class="control-group">
+                <label class="control-label">Quand avez-vous entendu parler de nous : <input type="text" class="date today constrained" placeholder="<cette année>" size="10" /></label>
+                <label class="control-label">Dites nous en plus : <input type="text" /></label>
+            </div>
+
+			<legend><h2>Il y a bien longtemps..</h2></legend>
+            <div class="control-group"><label class="control-label">Et puis quoi encore : <input type="text" class="date" size="10" /></label></div>
+
+            <legend><h2>Dans une galaxie très lointaine..</h2></legend>
+            <div class="control-group"><label class="control-label">C'est à ce moment que je suis né : <input type="text" class="date" size="10" /></label></div>
+
+		</form>
+
+	</article>
+
+
+	<article id="japaneseTest" class="container span5" lang="ja" >
+
+		<form class="ja well" >
+			<legend><h2>むかーし、昔</h2></legend>
+			<div class="control-group">
+                <label>What's up Doc?&nbsp;: <input type="text" class="date today constrained" size="10" placeholder="2012"/></label>
+				<label>Dites nous en plus : <input type="text" /></label>
+            </div>
+
+			<legend><h2>ひとむかし前..</h2></legend>
+			<div class="control-group"><label>Et puis quoi encore : <input type="text" class="date" size="10" /></label></div>
+
+			<legend><h2>銀河系のはて..</h2></legend>
+			<div class="control-group"><label>C'est à ce moment que je suis né : <input type="text" class="date" size="10" /></label></div>
+
+		</form>
+
+	</article>
+
+	<article id="" class="container span12" >
+		Click on this button to reset all first date input to today's date :
+		<button id="cmdToday" class="btn btn-large btn-info" >Today is the day</button>
+	</article>
+
+
+
+</body></html>
