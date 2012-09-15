@@ -26,7 +26,7 @@
 
 	/**
 	 * Get the difference (duration) between two dates/times in one of the following units :
-	 * 'h|hours', 'd|days', 'w|weeks', 'm|months', 'y|years'
+	 * 'd|days', 'm|months', 'y|years'
 	 */
 	function elapsed(unit, d1, d2) {
 		var unitCode = unit.charAt(0);
