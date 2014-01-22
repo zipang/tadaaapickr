@@ -352,7 +352,7 @@
 			var newDate = Date.add((fantomMove ? this.displayedDate : this.selectedDate || this.defaultDate), offset, unit),
 				$days = this.$cal.data("$days");
 
-			if (newDate < this.startDate || newDate > this.endDate) return this.select();
+			if (yyyymm(newDate) < yyyymm(this.startDate) || yyyymm(newDate) > yyyymm(this.endDate)) return this.select();
 
 			if (yyyymm(newDate) != yyyymm(this.displayedDate) || !this.selectedIndex) {
 				if (fantomMove) {
