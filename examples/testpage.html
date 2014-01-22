@@ -29,7 +29,7 @@
 				$("input.date.today").datepicker("setDate", today);
 			});
 
-			var thisYearStartsAt = new Date(today.getFullYear(), 0, 1),
+			var thisYearStartsAt = new Date(today.getFullYear(), 0, 15),
 				andEndsAt = new Date(today.getFullYear() + 1, 0, 0);
 
 			$("input.date.constrained")
